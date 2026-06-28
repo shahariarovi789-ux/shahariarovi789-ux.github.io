@@ -164,17 +164,49 @@ export default function App() {
         {/* ABOUT */}
         <section id="about" className="py-16 sm:py-24">
           <SectionHead n="02" title="About" />
-          <div className="grid md:grid-cols-12 gap-5" data-reveal>
-            <div className="md:col-span-7 border border-[var(--line)] rounded-xl p-7 bg-[var(--bg2)]/40 flex flex-col">
+          {/* row 1 — portrait + bio */}
+          <div className="grid md:grid-cols-12 gap-5 items-stretch" data-reveal>
+            {/* portrait */}
+            <div className="md:col-span-4">
+              <div className="group relative h-full min-h-72 rounded-xl overflow-hidden border border-[var(--line)] bg-[var(--bg2)]">
+                <img
+                  src="/profile.jpg"
+                  alt="Shahariar Asfaq Ovi"
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-500 group-hover:scale-[1.04]"
+                />
+                {/* gentle fade into the page background at the bottom edge only */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)]/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 ring-1 ring-inset ring-[var(--accent)]/0 group-hover:ring-[var(--accent)]/40 transition duration-500 rounded-xl" />
+              </div>
+            </div>
+            {/* bio */}
+            <div className="md:col-span-8 border border-[var(--line)] rounded-xl p-7 bg-[var(--bg2)]/40 flex flex-col">
               <p className="text-lg sm:text-xl leading-relaxed text-[var(--fg)]/90">{profile.about}</p>
               <div className="flex flex-wrap gap-2 mt-6">
-                {[`📍 ${profile.location}`, "🎓 CGPA 3.10", "🏆 2× ICPC Finalist", "💼 FlyRank AI"].map((chip) => (
-                  <span key={chip} className="font-mono text-xs text-[var(--muted)] border border-[var(--line)] rounded-full px-3 py-1.5">{chip}</span>
-                ))}
+                {[
+                  { label: `📍 ${profile.location}` },
+                  { label: "🎓 CGPA 3.10" },
+                  { label: "🏆 2× ICPC Dhaka Regional Finalist" },
+                  { label: "💼 FlyRank AI", href: "https://flyrank.ai/" },
+                ].map((chip) =>
+                  chip.href ? (
+                    <a key={chip.label} href={chip.href} target="_blank" rel="noreferrer"
+                      className="font-mono text-xs text-[var(--muted)] border border-[var(--line)] rounded-full px-3 py-1.5 hover:border-[var(--accent)]/50 hover:text-[var(--accent)] transition-colors">
+                      {chip.label} ↗
+                    </a>
+                  ) : (
+                    <span key={chip.label} className="font-mono text-xs text-[var(--muted)] border border-[var(--line)] rounded-full px-3 py-1.5">{chip.label}</span>
+                  )
+                )}
               </div>
               <Socials className="mt-auto pt-7" />
             </div>
-            <div className="md:col-span-5 border border-[var(--line)] rounded-xl p-7 bg-[var(--bg2)]/40">
+          </div>
+
+          {/* row 2 — education + experience */}
+          <div className="grid md:grid-cols-12 gap-5 mt-5" data-reveal>
+            <div className="md:col-span-4 border border-[var(--line)] rounded-xl p-7 bg-[var(--bg2)]/40">
               <h4 className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] mb-5">Education</h4>
               {education.map((e) => (
                 <div key={e.school}>
@@ -185,23 +217,24 @@ export default function App() {
                 </div>
               ))}
             </div>
-          </div>
-
-          {experience.length > 0 && (
-            <div className="mt-5" data-reveal>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {experience.length > 0 && (
+              <div className="md:col-span-8 grid sm:grid-cols-2 gap-4 content-start">
                 {experience.map((x) => (
                   <div key={x.role + x.org}
                     className="border border-[var(--line)] rounded-xl p-6 bg-[var(--bg2)]/40 hover:border-[var(--accent)]/40 transition-colors">
                     <p className="display text-lg text-[var(--fg)] leading-snug">{x.role}</p>
-                    <p className="text-[15px] text-[var(--accent)] mt-1">{x.org}</p>
+                    {x.url ? (
+                      <a href={x.url} target="_blank" rel="noreferrer" className="text-[15px] text-[var(--accent)] mt-1 inline-block hover:underline">{x.org} ↗</a>
+                    ) : (
+                      <p className="text-[15px] text-[var(--accent)] mt-1">{x.org}</p>
+                    )}
                     <p className="font-mono text-xs text-[var(--muted)] mt-2">{x.period}</p>
                     <p className="text-[15px] text-[var(--muted)] mt-3 leading-relaxed">{x.detail}</p>
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </section>
 
         {/* PROJECTS (renders when you add repos to data.js) */}

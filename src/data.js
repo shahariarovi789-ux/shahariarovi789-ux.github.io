@@ -73,7 +73,7 @@ export const education = [
     school: "University of Liberal Arts Bangladesh (ULAB)",
     degree: "B.Sc. in Computer Science & Engineering",
     period: "Jan 2022 — Present",
-    detail: "11th semester · CGPA 3.10. Focus: Artificial Intelligence, Algorithms & competitive programming.",
+    detail: "Final semester · CGPA 3.10. Focus: Artificial Intelligence, Algorithms & competitive programming.",
   },
 ]
 
@@ -82,6 +82,7 @@ export const experience = [
   {
     role: "Backend AI Engineer — Intern",
     org: "FlyRank AI",
+    url: "https://flyrank.ai/",
     period: "Jun 2026 — Present · Remote",
     detail: "Building backend systems for FlyRank AI — \"the autopilot for organic growth.\"",
   },
