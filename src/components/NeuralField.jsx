@@ -11,6 +11,14 @@ export default function NeuralField() {
     let w = 0, h = 0, dpr = 1
     let nodes = []
     let raf = 0
+    let hidden = false
+
+    // pause animation when tab is hidden (saves battery on phones)
+    function onVisibility() {
+      hidden = document.hidden
+      if (!hidden && !raf) loop()
+    }
+    document.addEventListener("visibilitychange", onVisibility)
     const mouse = { x: -9999, y: -9999, vx: 0, vy: 0, px: 0, py: 0 }
     const LINK = 130          // connection distance between nodes
     const MOUSE_R = 190       // cursor influence radius
@@ -22,12 +30,15 @@ export default function NeuralField() {
     function build() {
       w = canvas.clientWidth
       h = canvas.clientHeight
-      dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const mobile = w < 768
+      // lower pixel density on phones = far less fill cost = smoother
+      dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2)
       canvas.width = w * dpr
       canvas.height = h * dpr
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      const density = w < 640 ? 20000 : 13000
-      const count = Math.min(165, Math.floor((w * h) / density))
+      // far fewer nodes on mobile (O(n²) link cost dominates)
+      const density = mobile ? 34000 : 13000
+      const count = Math.min(mobile ? 42 : 165, Math.floor((w * h) / density))
       nodes = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
@@ -111,7 +122,13 @@ export default function NeuralField() {
         }
       }
 
-      raf = requestAnimationFrame(step)
+      raf = requestAnimationFrame(loop)
+    }
+
+    function loop() {
+      if (hidden) { raf = 0; return } // pause frames when tab hidden
+      if (reduce) return
+      step()
     }
 
     function onMove(e) {
@@ -124,7 +141,7 @@ export default function NeuralField() {
     }
 
     build()
-    if (!reduce) raf = requestAnimationFrame(step)
+    if (!reduce) loop()
     else step() // draw a single static frame
     window.addEventListener("resize", build)
     window.addEventListener("mousemove", onMove)
@@ -134,6 +151,7 @@ export default function NeuralField() {
       window.removeEventListener("resize", build)
       window.removeEventListener("mousemove", onMove)
       window.removeEventListener("mouseout", onLeave)
+      document.removeEventListener("visibilitychange", onVisibility)
     }
   }, [])
 

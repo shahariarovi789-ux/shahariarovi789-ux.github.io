@@ -63,7 +63,12 @@ body {
   transition: width .25s ease, height .25s ease, opacity .25s ease, background .25s ease;
   opacity: .7;
 }
-.cursor-ring.hovering { width: 56px; height: 56px; background: rgba(232,162,61,.15); opacity: 1; }
+.cursor-ring.hovering { width: 56px; height: 56px; background: rgba(59,130,246,.15); opacity: 1; }
+
+/* hide the custom cursor entirely on touch / coarse-pointer devices */
+@media (hover: none), (pointer: coarse) {
+  .cursor-dot, .cursor-ring { display: none !important; }
+}
 
 /* ---- film grain ---- */
 .grain {

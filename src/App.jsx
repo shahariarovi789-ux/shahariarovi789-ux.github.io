@@ -142,7 +142,7 @@ export default function App() {
         </section>
 
         {/* HIGHLIGHTS */}
-        <section id="highlights" className="py-24">
+        <section id="highlights" className="py-16 sm:py-24">
           <SectionHead n="01" title="Highlights" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {achievements.map((a, i) => (
@@ -162,7 +162,7 @@ export default function App() {
         </section>
 
         {/* ABOUT */}
-        <section id="about" className="py-24">
+        <section id="about" className="py-16 sm:py-24">
           <SectionHead n="02" title="About" />
           <div className="grid md:grid-cols-12 gap-5" data-reveal>
             <div className="md:col-span-7 border border-[var(--line)] rounded-xl p-7 bg-[var(--bg2)]/40 flex flex-col">
@@ -206,7 +206,7 @@ export default function App() {
 
         {/* PROJECTS (renders when you add repos to data.js) */}
         {projects.length > 0 && (
-          <section id="projects" className="py-24">
+          <section id="projects" className="py-16 sm:py-24">
             <SectionHead n="03" title="Projects" />
             <div className="grid sm:grid-cols-2 gap-4">
               {projects.map((p) => (
@@ -229,7 +229,7 @@ export default function App() {
         )}
 
         {/* SKILLS */}
-        <section id="skills" className="py-24">
+        <section id="skills" className="py-16 sm:py-24">
           <SectionHead n={projects.length ? "04" : "03"} title="Stack & Tools" />
           <div className="marquee overflow-hidden border-y border-[var(--line)] py-5 mb-10" data-reveal>
             <div className="marquee-track">
@@ -255,7 +255,7 @@ export default function App() {
         </section>
 
         {/* CERTIFICATIONS */}
-        <section id="certs" className="py-24">
+        <section id="certs" className="py-16 sm:py-24">
           <SectionHead n={projects.length ? "05" : "04"} title="Certifications" />
           <div className="grid sm:grid-cols-2 gap-4" data-reveal>
             {certifications.map((c) => (
@@ -271,7 +271,7 @@ export default function App() {
         </section>
 
         {/* CONTACT */}
-        <section id="contact" className="py-28 text-center" data-reveal>
+        <section id="contact" className="py-20 sm:py-28 text-center" data-reveal>
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-[var(--accent)] mb-6">( Let's talk )</p>
           <p className="max-w-xl mx-auto text-lg leading-relaxed text-[var(--muted)] mb-6">
             I'm open to AI/ML &amp; Data roles and collaborations. The fastest way to reach me is email.
