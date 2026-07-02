@@ -13,7 +13,7 @@ export default function Terminal({ onThemeChange }) {
   const [isOpen, setIsOpen] = useState(false)
   const [input, setInput] = useState("")
   const [history, setHistory] = useState([
-    { text: "Welcome to PiDoc AI Interactive Shell v1.0.0", type: "system" },
+    { text: "Welcome to Omega Interactive Shell v1.0.0", type: "system" },
     { text: "Type 'help' to view available commands.", type: "system" }
   ])
   const terminalEndRef = useRef(null)
@@ -30,7 +30,7 @@ export default function Terminal({ onThemeChange }) {
     if (!cleanInput) return;
 
     const [cmd, ...args] = cleanInput.toLowerCase().split(/\s+/);
-    const newLog = [{ text: `ovi-shell$ ${cleanInput}`, type: "input" }];
+    const newLog = [{ text: `omega-shell$ ${cleanInput}`, type: "input" }];
 
     switch (cmd) {
       case "help":
@@ -93,7 +93,7 @@ export default function Terminal({ onThemeChange }) {
           <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
           <span className="h-2.5 w-2.5 rounded-full bg-yellow-500" />
           <span className="h-2.5 w-2.5 rounded-full bg-green-500" />
-          <span className="font-mono text-xs text-[var(--muted)] ml-2">ovi-shell.sh</span>
+          <span className="font-mono text-xs text-[var(--muted)] ml-2">omega-shell.sh</span>
         </div>
         <span className="font-mono text-xs text-[var(--accent)] hover:text-[var(--fg)]">
           {isOpen ? "Collapse [-]" : "Interactive Shell [^]"}
@@ -126,7 +126,7 @@ export default function Terminal({ onThemeChange }) {
 
           {/* Form input */}
           <form onSubmit={handleCommandSubmit} className="flex items-center border-t border-[var(--line)] pt-2 mt-auto">
-            <span className="text-[var(--accent)] mr-2 select-none">ovi-shell$</span>
+            <span className="text-[var(--accent)] mr-2 select-none">omega-shell$</span>
             <input 
               type="text" 
               value={input}
