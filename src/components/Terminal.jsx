@@ -13,8 +13,19 @@ export default function Terminal({ onThemeChange }) {
   const [isOpen, setIsOpen] = useState(false)
   const [input, setInput] = useState("")
   const [history, setHistory] = useState([
-    { text: "Welcome to Omega Interactive Shell v1.0.0", type: "system" },
-    { text: "Type 'help' to view available commands.", type: "system" }
+    { 
+      text: 
+`   /\\      ovi@omega-shell
+  /  \\     ----------------
+ /    \\    OS: React/Vite Client UI
+/______\\   Kernel: NeuralField Particle Canvas
+           Shell: Omega Shell v1.0.0
+           Status: 2x Dhaka Regional Finalist
+           Intern: @ FlyRank AI
+           
+Welcome to Omega Shell! Type 'help' to start.`, 
+      type: "system" 
+    }
   ])
   const terminalEndRef = useRef(null)
 
