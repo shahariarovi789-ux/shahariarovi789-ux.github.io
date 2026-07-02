@@ -7,12 +7,20 @@ const LEXICON = {
   best: 3, smart: 2, clean: 2, cool: 3, awesome: 4, beautiful: 3, perfect: 4,
   nice: 2, friendly: 2, expert: 3, advanced: 2, success: 3, dynamic: 2, premium: 3,
   fun: 2, glad: 2, positive: 2, strong: 2, champion: 3, win: 3, genius: 4,
+  enjoy: 3, like: 2, delightful: 4, outstanding: 4, recommend: 3, helpful: 3,
+  worth: 2, productive: 3, super: 3, brilliant: 4, creative: 3,
   // Negative words
   hate: -4, bad: -2, terrible: -4, awful: -4, worst: -4, sad: -2, angry: -3,
-  broken: -2, fail: -3, failure: -3, useless: -3, poor: -2, weak: -2, slow: -2,
+  broken: -2, fail: -3, failure: -3, useless: -3, poor: -2, weak: -2,
   silly: -1, dump: -2, stupid: -3, negative: -2, mistake: -2, error: -1, bug: -2,
-  toxic: -3, ugly: -3, complex: -1, hard: -1, difficult: -1, pain: -2
+  toxic: -3, ugly: -3, complex: -1, hard: -1, difficult: -1, pain: -2,
+  worse: -3, horrible: -4, boring: -3, annoying: -3, slow: -2, waste: -3
 }
+
+const NEGATIONS = [
+  "not", "no", "never", "dont", "don't", "cannot", "cant", "can't",
+  "wasnt", "wasn't", "isnt", "isn't", "neither", "nor", "havent", "haven't"
+]
 
 export default function SentimentAnalyzer() {
   const [text, setText] = useState("")
@@ -29,11 +37,25 @@ export default function SentimentAnalyzer() {
     const words = text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").split(/\s+/)
     let totalScore = 0
     let matchCount = 0
+    let negateNext = false
 
     for (const word of words) {
+      if (NEGATIONS.includes(word)) {
+        negateNext = true
+        continue
+      }
+
       if (LEXICON[word] !== undefined) {
-        totalScore += LEXICON[word]
+        let scoreVal = LEXICON[word]
+        if (negateNext) {
+          scoreVal = -scoreVal
+          negateNext = false
+        }
+        totalScore += scoreVal
         matchCount++
+      } else {
+        // Reset negation flag if current word isn't matching, so it doesn't linger too far
+        negateNext = false
       }
     }
 
