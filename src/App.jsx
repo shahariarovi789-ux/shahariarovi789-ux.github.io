@@ -63,6 +63,7 @@ export default function App() {
   const [themeIdx, setThemeIdx] = useState(0)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [activeTag, setActiveTag] = useState("All")
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   
   const allSkills = skills.flatMap((s) => s.items)
   const projectTags = ["All", ...new Set(projects.flatMap((p) => p.tags))]
@@ -157,9 +158,45 @@ export default function App() {
               className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] border border-[var(--accent)]/40 rounded-full px-4 py-1.5 hover:bg-[var(--accent)]/10 transition-colors whitespace-nowrap">
               Résumé ↗
             </a>
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden w-8 h-8 rounded-full border border-[var(--line)] flex items-center justify-center hover:border-[var(--accent)]/50 transition-all cursor-none bg-[var(--bg2)]/60 shadow-sm z-50 relative"
+              title="Toggle Mobile Menu"
+            >
+              {mobileMenuOpen ? (
+                <svg className="w-4 h-4 text-[var(--fg)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4 text-[var(--fg)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
           </div>
         </div>
       </header>
+
+      {/* Mobile Menu Panel */}
+      <div
+        className={`lg:hidden fixed inset-0 bg-[var(--bg)]/95 backdrop-blur-2xl z-40 flex items-center justify-center transition-all duration-300 ease-in-out ${
+          mobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"
+        }`}
+      >
+        <nav className="flex flex-col items-center gap-8 font-mono text-lg uppercase tracking-widest text-[var(--muted)]">
+          {nav.map(([h, l], i) => (
+            <a
+              key={h}
+              href={`#${h}`}
+              onClick={() => setMobileMenuOpen(false)}
+              className="hover:text-[var(--fg)] transition-colors flex flex-col items-center gap-1"
+            >
+              <span className="text-[var(--accent)] text-xs font-semibold">0{i + 1}</span> 
+              <span className="text-[var(--fg)] text-xl font-bold tracking-wider">{l}</span>
+            </a>
+          ))}
+        </nav>
+      </div>
 
       <main id="top" className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10">
         {/* HERO */}
