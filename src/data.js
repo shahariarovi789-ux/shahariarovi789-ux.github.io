@@ -117,7 +117,7 @@ export const experience = [
 // this list is non-empty.
 export const projects = [
   {
-    title: "ROAR — Adaptive Prompt Engineering Tutor",
+    title: "ROAR — A personalized AI tutor for Prompt Engineering",
     description:
       "An intelligent tutoring system utilizing a quantized local DeepSeek-7B model fine-tuned with PEFT/LoRA adapters to dynamically teach prompt engineering. Features a custom SQLite-backed learning state machine, adaptive difficulty adjustments, and a hybrid rule+LLM scoring evaluation panel.",
     tags: ["Python", "Transformers", "PEFT", "Gradio", "SQLite"],
