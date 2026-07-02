@@ -120,9 +120,9 @@ export const projects = [
     title: "Agentic AI Toolkit",
     description:
       "A framework-free ReAct agent that reasons step by step and uses tools (calculator, file readers, word counter, clock) to solve tasks — powered by a local LLM via Ollama, with no API keys. Built with pure Python standard library so the whole agent loop is transparent.",
-    tags: ["Python", "LLM", "AI Agents", "Ollama"],
+    tags: ["Python", "LLM", "AI Agents", "WebLLM"],
     repo: "https://github.com/shahariarovi789-ux/agentic-ai-toolkit",
-    demo: "",
+    demo: "https://shahariarovi789-ux.github.io/agentic-ai-toolkit/",
     featured: true,
   },
 ]
