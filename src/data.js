@@ -125,4 +125,12 @@ export const projects = [
     demo: "https://shahariarovi789-ux.github.io/agentic-ai-toolkit/",
     featured: true,
   },
+  {
+    title: "Pidoc — Hospital Management System",
+    description:
+      "A dynamic, full-portal healthcare management web application bridging patients, doctors, and administrators. Built with a PHP backend and MySQL database, it features secure registrations, duplicate email checks, auto-incrementing key session tracking, digital prescriptions, and automated PDF billing. Styled with a premium dark-themed glassmorphism interface.",
+    tags: ["PHP", "MySQL", "Bootstrap", "JavaScript", "UI/UX"],
+    repo: "https://github.com/shahariarovi789-ux/hospital-management-system",
+    featured: true,
+  },
 ]
