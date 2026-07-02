@@ -117,9 +117,9 @@ export const experience = [
 // this list is non-empty.
 export const projects = [
   {
-    title: "ROAR — A personalized AI tutor for Prompt Engineering",
+    title: "ROAR — Final Year Capstone Project (ULAB)",
     description:
-      "An intelligent tutoring system utilizing a quantized local DeepSeek-7B model fine-tuned with PEFT/LoRA adapters to dynamically teach prompt engineering. Features a custom SQLite-backed learning state machine, adaptive difficulty adjustments, and a hybrid rule+LLM scoring evaluation panel.",
+      "Selected as the official final-year university capstone project. An intelligent, adaptive tutoring system utilizing a quantized local DeepSeek-7B model fine-tuned with PEFT/LoRA adapters to dynamically teach prompt engineering. Features a custom SQLite-backed learning state machine and a hybrid rule+LLM evaluation loop.",
     tags: ["Python", "Transformers", "PEFT", "Gradio", "SQLite"],
     repo: "https://github.com/shahariarovi789-ux/roar-prompt-tutor",
     featured: true,
