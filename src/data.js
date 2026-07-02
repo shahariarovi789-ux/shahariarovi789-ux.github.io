@@ -11,12 +11,12 @@ export const profile = {
   roles: ["Artificial Intelligence", "Large Language Models", "Machine Learning", "Competitive Programming"],
   // Short 1–2 sentence line for the HERO
   heroIntro:
-    "CSE undergrad at ULAB, AI enthusiast & 2× ICPC Dhaka Regional finalist — now a Backend AI Engineer Intern at FlyRank AI, building with Python, ML & LLMs.",
+    "CSE undergrad at ULAB, AI enthusiast & 2× ICPC Dhaka Regionalist — now a Backend AI Engineer Intern at FlyRank AI, building with Python, ML & LLMs.",
   // Fuller elevator pitch (shown in the About section)
   about:
     "I'm a Computer Science & Engineering undergrad at the University of Liberal Arts Bangladesh, " +
-    "passionate about Artificial Intelligence and competitive programming. A two-time ICPC Dhaka Regional " +
-    "finalist, I've spent the last three years sharpening my problem-solving in C++, and now work hands-on " +
+    "passionate about Artificial Intelligence and competitive programming. A two-time ICPC Dhaka Regionalist, " +
+    "I've spent the last three years sharpening my problem-solving in C++, and now work hands-on " +
     "with Python, machine learning, and LLMs. Currently a Backend AI Engineer Intern at FlyRank AI, " +
     "I love turning technology into real-world impact.",
   location: "Dhaka, Bangladesh",
@@ -53,8 +53,8 @@ export const skills = [
 
 // Real, verifiable wins from your CV. ICPC results lead.
 export const achievements = [
-  { title: "ICPC Dhaka Regional Finalist", org: "ICPC Dhaka Regional Contest", year: "2024" },
-  { title: "ICPC Dhaka Regional Finalist", org: "ICPC Dhaka Regional Contest", year: "2023" },
+  { title: "ICPC Dhaka Regionalist", org: "ICPC Dhaka Regional Contest", year: "2024" },
+  { title: "ICPC Dhaka Regionalist", org: "ICPC Dhaka Regional Contest", year: "2023" },
   { title: "2nd Runners-up", org: "Take-off Programming Contest · ULAB CPC", year: "2023" },
   { title: "Certificate of Appreciation", org: "Take-off Programming Contest · ULAB CPC", year: "2022" },
   { title: "Participant", org: "IUT 11th National ICT Fest", year: "2024" },
@@ -116,6 +116,30 @@ export const experience = [
 // GitHub username and I'll fill them in). The Projects section shows only when
 // this list is non-empty.
 export const projects = [
+  {
+    title: "Orion — Multi-Agent Corrective RAG (CRAG)",
+    description:
+      "An advanced multi-agent research coordinator that retrieves local documents, grades relevance, falls back to DuckDuckGo web searches when internal document knowledge is insufficient, and executes self-corrective critique loops to eliminate hallucinations.",
+    tags: ["Python", "Google Gemini API", "Streamlit", "Multi-Agent", "Vector Search"],
+    repo: "https://github.com/shahariarovi789-ux/orion-agent-rag",
+    featured: true,
+  },
+  {
+    title: "AeroDraw — Edge AI Gesture Controller",
+    description:
+      "A local, privacy-first computer vision web application that translates hand movements into screen vectors and system cursor clicks. Parses hand landmarks fully client-side via WebAssembly-based MediaPipe tracking, allowing users to draw in the air and control browser interfaces with smooth pinch clicks.",
+    tags: ["React", "Vite", "Tailwind CSS v4", "MediaPipe", "WebAssembly"],
+    repo: "https://github.com/shahariarovi789-ux/gesture-control",
+    featured: true,
+  },
+  {
+    title: "OmegaNet — Neural Framework from Scratch",
+    description:
+      "A modular, object-oriented deep learning framework built in Python using only NumPy. Implements forward/backward passes, dense layers with parameter tracking, dropout regularization, activation derivatives (ReLU, Sigmoid, Softmax), losses, and a hand-coded Adam optimizer to train on non-linear spiral/MNIST data.",
+    tags: ["Python", "NumPy", "Deep Learning", "Algorithms"],
+    repo: "https://github.com/shahariarovi789-ux/omeganet",
+    featured: true,
+  },
   {
     title: "Agentic AI Toolkit",
     description:
