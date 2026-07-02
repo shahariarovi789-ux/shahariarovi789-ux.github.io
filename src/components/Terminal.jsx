@@ -115,12 +115,14 @@ export default function Terminal({ onThemeChange }) {
                 return (
                   <div key={index} className="flex gap-5 items-center py-2 border-b border-[var(--line)]/50 mb-3 select-none">
                     {/* ASCII Logo */}
-                    <pre className="text-[var(--accent)] font-bold text-[10px] leading-tight filter drop-shadow-[0_0_8px_var(--accent)] shrink-0">
-{`   /\\
-  /  \\
- /    \\
-/______\\`}
-                    </pre>
+                     <pre className="text-[var(--accent)] font-bold text-[9px] sm:text-[10px] leading-tight filter drop-shadow-[0_0_8px_var(--accent)] shrink-0">
+{`       /\\
+      /  \\
+     / /\\ \\
+    / /  \\ \\
+   / /____\\ \\
+  /__________\\`}
+                     </pre>
                     {/* Specs */}
                     <div className="font-mono text-[10px] space-y-0.5">
                       <div><span className="text-[var(--accent)] font-semibold">ovi</span><span className="text-[var(--muted)]">@</span><span className="text-[var(--accent)] font-semibold">omega-shell</span></div>
