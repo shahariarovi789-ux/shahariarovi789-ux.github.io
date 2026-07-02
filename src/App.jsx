@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { profile, skills, education, experience, achievements, certifications, projects } from "./data"
 import NeuralField from "./components/NeuralField"
 import Cursor from "./components/Cursor"
+import SentimentAnalyzer from "./components/SentimentAnalyzer"
+import Terminal from "./components/Terminal"
 
 const firstName = profile.name.split(" ")[0]
 const lastName = profile.name.split(" ").slice(1).join(" ")
@@ -49,10 +51,44 @@ function SectionHead({ n, title }) {
   )
 }
 
+const themes = [
+  { name: "blue", label: "🔵 Blue", accent: "#3b82f6", soft: "#2563eb" },
+  { name: "green", label: "🟢 Green", accent: "#10b981", soft: "#059669" },
+  { name: "red", label: "🔴 Red", accent: "#ef4444", soft: "#dc2626" },
+]
+
 export default function App() {
   useReveal()
   const [scrolled, setScrolled] = useState(false)
+  const [themeIdx, setThemeIdx] = useState(0)
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const [activeTag, setActiveTag] = useState("All")
+  
   const allSkills = skills.flatMap((s) => s.items)
+  const projectTags = ["All", ...new Set(projects.flatMap((p) => p.tags))]
+  const filteredProjects = activeTag === "All" ? projects : projects.filter((p) => p.tags.includes(activeTag))
+
+  const handleThemeChange = (name) => {
+    const idx = themes.findIndex((t) => t.name === name)
+    if (idx !== -1) setThemeIdx(idx)
+  }
+
+  useEffect(() => {
+    const t = themes[themeIdx]
+    document.documentElement.style.setProperty('--accent', t.accent)
+    document.documentElement.style.setProperty('--accent-soft', t.soft)
+  }, [themeIdx])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight
+      if (totalHeight > 0) {
+        setScrollProgress((window.scrollY / totalHeight) * 100)
+      }
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -65,6 +101,7 @@ export default function App() {
     ["highlights", "Highlights"],
     ["about", "About"],
     ...(projects.length ? [["projects", "Projects"]] : []),
+    ["sandbox", "AI Demo"],
     ["skills", "Stack"],
     ["certs", "Certs"],
     ["contact", "Contact"],
@@ -75,6 +112,12 @@ export default function App() {
       <NeuralField />
       <Cursor />
       <div className="grain" />
+      
+      {/* Scroll Progress Bar */}
+      <div 
+        className="fixed top-0 left-0 h-[3px] bg-[var(--accent)] z-50 transition-all duration-100" 
+        style={{ width: `${scrollProgress}%`, boxShadow: "0 0 10px var(--accent)" }} 
+      />
 
       {/* header */}
       <header
@@ -88,23 +131,30 @@ export default function App() {
           <a href="#top" className="serif-name text-2xl text-[var(--fg)]">
             {firstName}<span className="text-[var(--accent)]">.</span>
           </a>
-          <div className="hidden md:flex items-center gap-7 font-mono text-xs uppercase tracking-widest text-[var(--muted)]">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-6 mx-6 font-mono text-xs uppercase tracking-widest text-[var(--muted)]">
             {nav.map(([h, l], i) => (
-              <a key={h} href={`#${h}`} className="link-sweep hover:text-[var(--fg)] transition-colors">
-                <span className="text-[var(--accent)]">0{i + 1}</span> {l}
+              <a key={h} href={`#${h}`} className="link-sweep hover:text-[var(--fg)] transition-colors whitespace-nowrap">
+                <span className="text-[var(--accent)] mr-1">0{i + 1}</span> {l}
               </a>
             ))}
           </div>
           <div className="flex items-center gap-5">
-            <span className="hidden lg:flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--muted)]">
+            <span className="hidden xl:flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--muted)] whitespace-nowrap">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-60 animate-ping" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent)]" />
               </span>
               Open to work
             </span>
+            <button 
+              onClick={() => setThemeIdx((prev) => (prev + 1) % themes.length)}
+              className="w-8 h-8 rounded-full border border-[var(--line)] flex items-center justify-center hover:border-[var(--accent)]/50 transition-all cursor-none bg-[var(--bg2)]/60 shadow-sm"
+              title="Cycle Accent Color Theme"
+            >
+              <span className="w-3 h-3 rounded-full transition-colors duration-300" style={{ backgroundColor: "var(--accent)", boxShadow: "0 0 8px var(--accent)" }} />
+            </button>
             <a href={profile.resumeUrl} target="_blank" rel="noreferrer"
-              className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] border border-[var(--accent)]/40 rounded-full px-4 py-1.5 hover:bg-[var(--accent)]/10 transition-colors">
+              className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] border border-[var(--accent)]/40 rounded-full px-4 py-1.5 hover:bg-[var(--accent)]/10 transition-colors whitespace-nowrap">
               Résumé ↗
             </a>
           </div>
@@ -241,8 +291,26 @@ export default function App() {
         {projects.length > 0 && (
           <section id="projects" className="py-16 sm:py-24">
             <SectionHead n="03" title="Projects" />
+            
+            {/* Project Filter Chips */}
+            <div className="flex flex-wrap gap-2 mb-8" data-reveal>
+              {projectTags.map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => setActiveTag(tag)}
+                  className={`font-mono text-xs uppercase tracking-wider px-4 py-1.5 rounded-full border transition-all cursor-none ${
+                    activeTag === tag
+                      ? "bg-[var(--accent)] text-[#0b1220] border-[var(--accent)] font-semibold shadow-[0_0_12px_var(--accent)]"
+                      : "text-[var(--muted)] border-[var(--line)] hover:text-[var(--fg)] hover:border-[var(--accent)]/50"
+                  }`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+
             <div className="grid sm:grid-cols-2 gap-4">
-              {projects.map((p) => (
+              {filteredProjects.map((p) => (
                 <a key={p.title} href={p.demo || p.repo || "#"} target="_blank" rel="noreferrer"
                   className="group border border-[var(--line)] rounded-xl p-6 bg-[var(--bg2)]/40 hover:border-[var(--accent)]/40 transition-colors">
                   <div className="flex items-center justify-between">
@@ -261,9 +329,17 @@ export default function App() {
           </section>
         )}
 
+        {/* AI SANDBOX */}
+        <section id="sandbox" className="py-16 sm:py-24">
+          <SectionHead n="04" title="AI Sandbox" />
+          <div data-reveal>
+            <SentimentAnalyzer />
+          </div>
+        </section>
+
         {/* SKILLS */}
         <section id="skills" className="py-16 sm:py-24">
-          <SectionHead n={projects.length ? "04" : "03"} title="Stack & Tools" />
+          <SectionHead n="05" title="Stack & Tools" />
           <div className="marquee overflow-hidden border-y border-[var(--line)] py-5 mb-10" data-reveal>
             <div className="marquee-track">
               {[...allSkills, ...allSkills].map((s, i) => (
@@ -289,7 +365,7 @@ export default function App() {
 
         {/* CERTIFICATIONS */}
         <section id="certs" className="py-16 sm:py-24">
-          <SectionHead n={projects.length ? "05" : "04"} title="Certifications" />
+          <SectionHead n="06" title="Certifications" />
           <div className="grid sm:grid-cols-2 gap-4" data-reveal>
             {certifications.map((c) => (
               <div key={c.title} className="border border-[var(--line)] rounded-xl p-6 bg-[var(--bg2)]/40 flex items-start justify-between gap-4 hover:border-[var(--accent)]/40 transition-colors">
@@ -324,6 +400,7 @@ export default function App() {
           <span>Built with React + Canvas</span>
         </div>
       </footer>
+      <Terminal onThemeChange={handleThemeChange} />
     </div>
   )
 }

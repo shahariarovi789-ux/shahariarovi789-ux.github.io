@@ -12,11 +12,20 @@ export default function NeuralField() {
     let nodes = []
     let raf = 0
     let hidden = false
+    let inView = true
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        inView = entry.isIntersecting
+        if (inView && !raf && !hidden) loop()
+      })
+    }, { threshold: 0 })
+    observer.observe(canvas)
 
     // pause animation when tab is hidden (saves battery on phones)
     function onVisibility() {
       hidden = document.hidden
-      if (!hidden && !raf) loop()
+      if (!hidden && inView && !raf) loop()
     }
     document.addEventListener("visibilitychange", onVisibility)
     const mouse = { x: -9999, y: -9999, vx: 0, vy: 0, px: 0, py: 0 }
@@ -126,7 +135,7 @@ export default function NeuralField() {
     }
 
     function loop() {
-      if (hidden) { raf = 0; return } // pause frames when tab hidden
+      if (hidden || !inView) { raf = 0; return } // pause frames when tab hidden or out of view
       if (reduce) return
       step()
     }
@@ -148,6 +157,7 @@ export default function NeuralField() {
     window.addEventListener("mouseout", onLeave)
     return () => {
       cancelAnimationFrame(raf)
+      observer.disconnect()
       window.removeEventListener("resize", build)
       window.removeEventListener("mousemove", onMove)
       window.removeEventListener("mouseout", onLeave)
