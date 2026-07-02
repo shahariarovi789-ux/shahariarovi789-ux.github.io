@@ -117,6 +117,14 @@ export const experience = [
 // this list is non-empty.
 export const projects = [
   {
+    title: "ROAR — Adaptive Prompt Engineering Tutor",
+    description:
+      "An intelligent tutoring system utilizing a quantized local DeepSeek-7B model fine-tuned with PEFT/LoRA adapters to dynamically teach prompt engineering. Features a custom SQLite-backed learning state machine, adaptive difficulty adjustments, and a hybrid rule+LLM scoring evaluation panel.",
+    tags: ["Python", "Transformers", "PEFT", "Gradio", "SQLite"],
+    repo: "https://github.com/shahariarovi789-ux/roar-prompt-tutor",
+    featured: true,
+  },
+  {
     title: "Orion — Multi-Agent Corrective RAG (CRAG)",
     description:
       "An advanced multi-agent research coordinator that retrieves local documents, grades relevance, falls back to DuckDuckGo web searches when internal document knowledge is insufficient, and executes self-corrective critique loops to eliminate hallucinations.",
