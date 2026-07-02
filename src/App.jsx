@@ -183,6 +183,16 @@ export default function App() {
           mobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"
         }`}
       >
+        {/* Dedicated Close Button */}
+        <button 
+          onClick={() => setMobileMenuOpen(false)}
+          className="absolute top-6 right-6 w-10 h-10 rounded-full border border-[var(--line)] flex items-center justify-center hover:border-[var(--accent)]/50 bg-[var(--bg2)]/80 text-[var(--fg)] active:scale-95 transition-all shadow-md"
+          title="Close Mobile Menu"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
         <nav className="flex flex-col items-center gap-8 font-mono text-lg uppercase tracking-widest text-[var(--muted)]">
           {nav.map(([h, l], i) => (
             <a
