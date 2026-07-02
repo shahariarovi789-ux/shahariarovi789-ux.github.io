@@ -115,4 +115,14 @@ export const experience = [
 // No code projects on the CV yet. Add your GitHub repos here (or send me your
 // GitHub username and I'll fill them in). The Projects section shows only when
 // this list is non-empty.
-export const projects = []
+export const projects = [
+  {
+    title: "Agentic AI Toolkit",
+    description:
+      "A framework-free ReAct agent that reasons step by step and uses tools (calculator, file readers, word counter, clock) to solve tasks — powered by a local LLM via Ollama, with no API keys. Built with pure Python standard library so the whole agent loop is transparent.",
+    tags: ["Python", "LLM", "AI Agents", "Ollama"],
+    repo: "https://github.com/shahariarovi789-ux/agentic-ai-toolkit",
+    demo: "",
+    featured: true,
+  },
+]
