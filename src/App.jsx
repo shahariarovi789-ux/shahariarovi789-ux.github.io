@@ -154,7 +154,7 @@ export default function App() {
             >
               <span className="w-3 h-3 rounded-full transition-colors duration-300" style={{ backgroundColor: "var(--accent)", boxShadow: "0 0 8px var(--accent)" }} />
             </button>
-            <a href={profile.resumeUrl} target="_blank" rel="noreferrer"
+            <a href={`${profile.resumeUrl}?v=2`} target="_blank" rel="noreferrer"
               className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] border border-[var(--accent)]/40 rounded-full px-4 py-1.5 hover:bg-[var(--accent)]/10 transition-colors whitespace-nowrap">
               Résumé ↗
             </a>
@@ -283,8 +283,7 @@ export default function App() {
               <div className="flex flex-wrap gap-2 mt-6">
                 {[
                   { label: `📍 ${profile.location}` },
-                  { label: "🎓 CGPA 3.10" },
-                  { label: "🏆 2× ICPC Dhaka Regional Finalist" },
+                  { label: "🏆 2× ICPC Dhaka Regionalist" },
                   { label: "💼 FlyRank AI", href: "https://flyrank.ai/" },
                 ].map((chip) =>
                   chip.href ? (

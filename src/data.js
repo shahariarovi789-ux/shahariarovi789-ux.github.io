@@ -73,7 +73,7 @@ export const education = [
     school: "University of Liberal Arts Bangladesh (ULAB)",
     degree: "B.Sc. in Computer Science & Engineering",
     period: "Jan 2022 — Present",
-    detail: "Final semester · CGPA 3.10. Focus: Artificial Intelligence, Algorithms & competitive programming.",
+    detail: "Final semester. Focus: Artificial Intelligence, Algorithms & competitive programming.",
   },
 ]
 
