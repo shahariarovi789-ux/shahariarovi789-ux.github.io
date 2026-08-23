@@ -284,7 +284,8 @@ export default function App() {
                 {[
                   { label: `📍 ${profile.location}` },
                   { label: "🏆 2× ICPC Dhaka Regionalist" },
-                  { label: "💼 FlyRank AI", href: "https://flyrank.ai/" },
+                  { label: "🤖 AI Data Trainer · GenMorphics" },
+                  { label: "⚡ Model Context Protocol (MCP)" },
                 ].map((chip) =>
                   chip.href ? (
                     <a key={chip.label} href={chip.href} target="_blank" rel="noreferrer"
@@ -412,16 +413,41 @@ export default function App() {
         {/* CERTIFICATIONS */}
         <section id="certs" className="py-16 sm:py-24">
           <SectionHead n="06" title="Certifications" />
-          <div className="grid sm:grid-cols-2 gap-4" data-reveal>
-            {certifications.map((c) => (
-              <div key={c.title} className="border border-[var(--line)] rounded-xl p-6 bg-[var(--bg2)]/40 flex items-start justify-between gap-4 hover:border-[var(--accent)]/40 transition-colors">
-                <div>
-                  <h4 className="text-base text-[var(--fg)] leading-snug">{c.title}</h4>
-                  <p className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] mt-2">{c.org}</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-reveal>
+            {certifications.map((c) => {
+              const inner = (
+                <>
+                  <div className="flex-1">
+                    <h4 className="text-base text-[var(--fg)] leading-snug group-hover:text-[var(--accent)] transition-colors flex items-center justify-between gap-2">
+                      <span>{c.title}</span>
+                      {c.url && <span className="font-mono text-xs text-[var(--accent)] shrink-0">↗</span>}
+                    </h4>
+                    <p className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] mt-2">{c.org}</p>
+                  </div>
+                  <span className="font-mono text-xs text-[var(--muted)] shrink-0 self-start ml-2">{c.year}</span>
+                </>
+              );
+
+              return c.url ? (
+                <a
+                  key={c.title}
+                  href={c.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group border border-[var(--line)] rounded-xl p-5 bg-[var(--bg2)]/40 flex items-start justify-between gap-3 hover:border-[var(--accent)]/50 hover:bg-[var(--bg2)] hover:shadow-lg hover:shadow-[var(--accent)]/5 transition-all"
+                  title="View Certificate PDF"
+                >
+                  {inner}
+                </a>
+              ) : (
+                <div
+                  key={c.title}
+                  className="border border-[var(--line)] rounded-xl p-5 bg-[var(--bg2)]/40 flex items-start justify-between gap-3 hover:border-[var(--accent)]/40 transition-colors"
+                >
+                  {inner}
                 </div>
-                <span className="font-mono text-sm text-[var(--muted)] shrink-0">{c.year}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
