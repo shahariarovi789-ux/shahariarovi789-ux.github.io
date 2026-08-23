@@ -161,6 +161,7 @@ export const certifications = [
     title: "Foundations of Agentic AI",
     org: "Hugging Face",
     year: "2025",
+    url: "/certificates/huggingface-foundations-of-agents.pdf",
   },
   {
     title: "Unsupervised Learning, Recommenders & Reinforcement Learning",
@@ -176,6 +177,18 @@ export const certifications = [
     title: "Supervised Machine Learning: Regression & Classification",
     org: "Coursera",
     year: "2024",
+  },
+  {
+    title: "Facebook Ads Mastery",
+    org: "10 Minute School",
+    year: "2023",
+    url: "/certificates/facebook-ads-mastery.pdf",
+  },
+  {
+    title: "Android Application Development",
+    org: "Creative IT Institute",
+    year: "2022",
+    url: "/certificates/android-app-development-creative-it.pdf",
   },
 ]
 
