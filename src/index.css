@@ -213,27 +213,27 @@ body {
 
 /* ---- interactive glowing kinetic letters in footer ---- */
 .kinetic-letter {
-  font-family: "Syne", "Outfit", "Space Grotesk", ui-sans-serif, sans-serif;
-  font-weight: 800;
+  font-family: "Space Grotesk", "Outfit", "Inter", -apple-system, sans-serif;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: -0.01em;
-  color: rgba(233, 238, 247, 0.18);
-  transition: transform 0.24s cubic-bezier(0.2, 1, 0.3, 1), color 0.24s ease, text-shadow 0.24s ease, filter 0.24s ease;
+  letter-spacing: 0.06em;
+  color: rgba(233, 238, 247, 0.22);
+  transition: transform 0.22s cubic-bezier(0.2, 1, 0.3, 1), color 0.22s ease, text-shadow 0.22s ease, filter 0.22s ease;
   will-change: transform, color, text-shadow;
   display: inline-block;
   user-select: none;
-  line-height: 0.95;
+  line-height: 1;
 }
 
 .kinetic-letter:hover {
   color: #ffffff;
   text-shadow: 
-    0 0 16px var(--accent),
-    0 0 36px var(--accent),
-    0 0 70px var(--accent),
-    0 0 110px #ffffff;
-  transform: translateY(-6px) scale(1.15);
-  filter: drop-shadow(0 0 22px var(--accent));
+    0 0 14px var(--accent),
+    0 0 30px var(--accent),
+    0 0 60px var(--accent),
+    0 0 95px #ffffff;
+  transform: translateY(-5px) scale(1.12);
+  filter: drop-shadow(0 0 18px var(--accent));
   z-index: 30;
   position: relative;
 }

@@ -734,14 +734,14 @@ export default function App() {
           </div>
 
           {/* Interactive Letter-by-Letter Neon Glow Signature (Single Line Display) */}
-          <div className="pt-12 pb-4 overflow-hidden select-none w-full">
-            <div className="w-full flex flex-nowrap items-center justify-between sm:justify-center sm:gap-5 md:gap-7 whitespace-nowrap">
+          <div className="pt-10 pb-4 select-none w-full flex justify-center text-center">
+            <div className="inline-flex flex-nowrap items-center justify-center gap-3 sm:gap-6 md:gap-8 whitespace-nowrap px-2">
               {["SHAHARIAR", "ASFAQ", "OVI"].map((word, wIdx) => (
                 <div key={wIdx} className="inline-flex items-center flex-nowrap shrink-0">
                   {word.split("").map((char, cIdx) => (
                     <span
                       key={cIdx}
-                      className="kinetic-letter text-[clamp(1.15rem,5.1vw,4.5rem)] cursor-none"
+                      className="kinetic-letter text-[clamp(1rem,3.4vw,2.75rem)] cursor-none"
                     >
                       {char}
                     </span>
