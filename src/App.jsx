@@ -140,13 +140,15 @@ export default function App() {
       } else if (e.key === "Escape") {
         setMobileMenuOpen(false)
         setTerminalOpen(false)
-      } else if (e.key >= "1" && e.key <= "6") {
-        const targetIds = ["highlights", "about", "projects", "sandbox", "skills", "certs"]
+      } else if (e.key >= "1" && e.key <= "9") {
         const idx = parseInt(e.key) - 1
-        if (targetIds[idx]) {
-          const el = document.getElementById(targetIds[idx])
+        if (nav[idx]) {
+          const targetId = nav[idx][0]
+          const el = document.getElementById(targetId)
           if (el) el.scrollIntoView({ behavior: "smooth" })
         }
+      } else if (e.key === "0") {
+        window.scrollTo({ top: 0, behavior: "smooth" })
       }
     }
     window.addEventListener("keydown", handleKeyDown)
@@ -650,7 +652,7 @@ export default function App() {
             <div>
               <h4 className="text-[var(--accent)] uppercase tracking-widest font-semibold mb-4 flex items-center gap-2">
                 <span>Directory Index</span>
-                <span className="text-[10px] opacity-60">[01-06]</span>
+                <span className="text-[10px] opacity-60">[01-07]</span>
               </h4>
               <ul className="space-y-2.5 uppercase tracking-wider text-[var(--muted)]">
                 {nav.map(([h, l], idx) => (
@@ -715,7 +717,7 @@ export default function App() {
                 </div>
                 <div className="flex items-center justify-between text-[11px]">
                   <span className="text-[var(--muted)]">Section Jump</span>
-                  <span className="text-[var(--muted)]">Keys <kbd className="kbd-badge text-[9px]">1</kbd>–<kbd className="kbd-badge text-[9px]">6</kbd></span>
+                  <span className="text-[var(--muted)]">Keys <kbd className="kbd-badge text-[9px]">1</kbd>–<kbd className="kbd-badge text-[9px]">7</kbd></span>
                 </div>
                 <div className="flex items-center justify-between text-[11px]">
                   <span className="text-[var(--muted)]">Accent Palette</span>
