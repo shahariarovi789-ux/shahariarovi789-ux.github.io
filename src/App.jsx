@@ -20,23 +20,25 @@ function useReveal() {
   }, [])
 }
 
-function Socials({ className = "" }) {
+function Socials({ className = "", onCopyEmail }) {
   const { socials, email } = profile
-  const links = [
-    socials.github && ["GitHub", socials.github],
-    socials.linkedin && ["LinkedIn", socials.linkedin],
-    socials.kaggle && ["Kaggle", socials.kaggle],
-    socials.twitter && ["Twitter", socials.twitter],
-    email && ["Email", `mailto:${email}`],
-  ].filter(Boolean)
   return (
     <div className={`flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-widest ${className}`}>
-      {links.map(([label, href]) => (
-        <a key={label} href={href} target="_blank" rel="noreferrer"
-          className="link-sweep text-[var(--muted)] hover:text-[var(--accent)] transition-colors">
-          {label} ↗
+      {socials.github && (
+        <a href={socials.github} target="_blank" rel="noreferrer" className="link-sweep text-[var(--muted)] hover:text-[var(--accent)] transition-colors">
+          GitHub ↗
         </a>
-      ))}
+      )}
+      {socials.linkedin && (
+        <a href={socials.linkedin} target="_blank" rel="noreferrer" className="link-sweep text-[var(--muted)] hover:text-[var(--accent)] transition-colors">
+          LinkedIn ↗
+        </a>
+      )}
+      {email && (
+        <button onClick={onCopyEmail} className="link-sweep text-[var(--muted)] hover:text-[var(--accent)] transition-colors cursor-none">
+          Email (Copy) ↗
+        </button>
+      )}
     </div>
   )
 }
@@ -64,7 +66,11 @@ export default function App() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [activeTag, setActiveTag] = useState("All")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  
+  const [terminalOpen, setTerminalOpen] = useState(false)
+  const [toastMessage, setToastMessage] = useState(null)
+  const [dhakaTime, setDhakaTime] = useState("")
+  const [emailCopied, setEmailCopied] = useState(false)
+
   const allSkills = skills.flatMap((s) => s.items)
   const projectTags = ["All", ...new Set(projects.flatMap((p) => p.tags))]
   const filteredProjects = activeTag === "All" ? projects : projects.filter((p) => p.tags.includes(activeTag))
@@ -74,12 +80,32 @@ export default function App() {
     if (idx !== -1) setThemeIdx(idx)
   }
 
+  // Live Dhaka Time Clock (UTC+6)
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date()
+      const timeStr = now.toLocaleTimeString("en-US", {
+        timeZone: "Asia/Dhaka",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+      })
+      setDhakaTime(timeStr)
+    }
+    updateTime()
+    const timer = setInterval(updateTime, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  // Dynamic Theme Colors
   useEffect(() => {
     const t = themes[themeIdx]
     document.documentElement.style.setProperty('--accent', t.accent)
     document.documentElement.style.setProperty('--accent-soft', t.soft)
   }, [themeIdx])
 
+  // Scroll Progress
   useEffect(() => {
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight
@@ -91,12 +117,63 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Header background on scroll
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
+
+  // Keyboard Shortcuts (T for terminal, 1-6 for sections, Esc to close)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) {
+        if (e.key === "Escape") document.activeElement.blur()
+        return
+      }
+
+      if (e.key.toLowerCase() === "t" || e.key === "`") {
+        e.preventDefault()
+        setTerminalOpen((prev) => !prev)
+      } else if (e.key === "Escape") {
+        setMobileMenuOpen(false)
+        setTerminalOpen(false)
+      } else if (e.key >= "1" && e.key <= "6") {
+        const targetIds = ["highlights", "about", "projects", "sandbox", "skills", "certs"]
+        const idx = parseInt(e.key) - 1
+        if (targetIds[idx]) {
+          const el = document.getElementById(targetIds[idx])
+          if (el) el.scrollIntoView({ behavior: "smooth" })
+        }
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
+
+  const copyEmailToClipboard = (e) => {
+    if (e) e.preventDefault()
+    navigator.clipboard.writeText(profile.email)
+    setEmailCopied(true)
+    setToastMessage(`✓ Copied to clipboard: ${profile.email}`)
+    setTimeout(() => {
+      setEmailCopied(false)
+      setToastMessage(null)
+    }, 3200)
+  }
+
+  const handleCardMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    e.currentTarget.style.setProperty("--mouse-x", `${x}px`)
+    e.currentTarget.style.setProperty("--mouse-y", `${y}px`)
+  }
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
 
   const nav = [
     ["highlights", "Highlights"],
@@ -113,25 +190,35 @@ export default function App() {
       <NeuralField />
       <Cursor />
       <div className="grain" />
+
+      {/* Floating Toast Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 toast-popup bg-[var(--bg2)]/95 backdrop-blur-xl border border-[var(--accent)] text-[var(--fg)] px-5 py-2.5 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.8),0_0_20px_var(--accent)] font-mono text-xs flex items-center gap-2 pointer-events-none">
+          <span className="text-[var(--accent)]">●</span>
+          <span>{toastMessage}</span>
+        </div>
+      )}
       
       {/* Scroll Progress Bar */}
       <div 
         className="fixed top-0 left-0 h-[3px] bg-[var(--accent)] z-50 transition-all duration-100" 
-        style={{ width: `${scrollProgress}%`, boxShadow: "0 0 10px var(--accent)" }} 
+        style={{ width: `${scrollProgress}%`, boxShadow: "0 0 12px var(--accent)" }} 
       />
 
-      {/* header */}
+      {/* Header */}
       <header
         className={`fixed top-0 inset-x-0 z-40 transition-all duration-500 ${
           scrolled
-            ? "h-16 bg-[var(--bg)]/70 backdrop-blur-xl border-b border-[var(--line)] shadow-[0_8px_30px_rgba(0,0,0,0.45)]"
+            ? "h-16 bg-[var(--bg)]/80 backdrop-blur-xl border-b border-[var(--line)] shadow-[0_8px_30px_rgba(0,0,0,0.45)]"
             : "h-20 bg-transparent border-b border-transparent"
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 sm:px-10 h-full flex items-center justify-between">
-          <a href="#top" className="serif-name text-2xl text-[var(--fg)]">
-            {firstName}<span className="text-[var(--accent)]">.</span>
+          <a href="#top" className="serif-name text-2xl text-[var(--fg)] group">
+            {firstName}<span className="text-[var(--accent)] group-hover:animate-ping inline-block">.</span>
           </a>
+          
+          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-4 xl:gap-6 mx-6 font-mono text-xs uppercase tracking-widest text-[var(--muted)]">
             {nav.map(([h, l], i) => (
               <a key={h} href={`#${h}`} className="link-sweep hover:text-[var(--fg)] transition-colors whitespace-nowrap">
@@ -139,25 +226,35 @@ export default function App() {
               </a>
             ))}
           </div>
-          <div className="flex items-center gap-5">
-            <span className="hidden xl:flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--muted)] whitespace-nowrap">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-60 animate-ping" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent)]" />
+
+          {/* Right Header Badges & Actions */}
+          <div className="flex items-center gap-4 sm:gap-5">
+            {/* Live Clock & Open to work beacon */}
+            <div className="hidden xl:flex items-center gap-3 font-mono text-xs uppercase tracking-wider text-[var(--muted)] bg-[var(--bg2)]/60 border border-[var(--line)] rounded-full px-3.5 py-1">
+              <span className="pulse-beacon">
+                <span />
+                <span />
               </span>
-              Open to work
-            </span>
+              <span className="text-[var(--fg)] text-[11px]">Dhaka {dhakaTime ? dhakaTime.slice(0, 5) : "21:50"}</span>
+              <span className="text-[var(--accent)] text-[10px]">● OPEN</span>
+            </div>
+
+            {/* Accent Theme Switcher */}
             <button 
               onClick={() => setThemeIdx((prev) => (prev + 1) % themes.length)}
-              className="w-8 h-8 rounded-full border border-[var(--line)] flex items-center justify-center hover:border-[var(--accent)]/50 transition-all cursor-none bg-[var(--bg2)]/60 shadow-sm"
+              className="w-8 h-8 rounded-full border border-[var(--line)] flex items-center justify-center hover:border-[var(--accent)]/60 transition-all cursor-none bg-[var(--bg2)]/60 shadow-sm active:scale-95"
               title="Cycle Accent Color Theme"
             >
-              <span className="w-3 h-3 rounded-full transition-colors duration-300" style={{ backgroundColor: "var(--accent)", boxShadow: "0 0 8px var(--accent)" }} />
+              <span className="w-3 h-3 rounded-full transition-colors duration-300" style={{ backgroundColor: "var(--accent)", boxShadow: "0 0 10px var(--accent)" }} />
             </button>
-            <a href={`${profile.resumeUrl}?v=2`} target="_blank" rel="noreferrer"
-              className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] border border-[var(--accent)]/40 rounded-full px-4 py-1.5 hover:bg-[var(--accent)]/10 transition-colors whitespace-nowrap">
+
+            {/* Résumé Link */}
+            <a href={`${profile.resumeUrl}?v=3`} target="_blank" rel="noreferrer"
+              className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] border border-[var(--accent)]/40 rounded-full px-4 py-1.5 hover:bg-[var(--accent)]/10 hover:border-[var(--accent)] transition-all whitespace-nowrap shadow-sm">
               Résumé ↗
             </a>
+
+            {/* Mobile Menu Trigger */}
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden w-8 h-8 rounded-full border border-[var(--line)] flex items-center justify-center hover:border-[var(--accent)]/50 transition-all cursor-none bg-[var(--bg2)]/60 shadow-sm z-50 relative"
@@ -183,7 +280,6 @@ export default function App() {
           mobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"
         }`}
       >
-        {/* Dedicated Close Button */}
         <button 
           onClick={() => setMobileMenuOpen(false)}
           className="absolute top-6 right-6 w-10 h-10 rounded-full border border-[var(--line)] flex items-center justify-center hover:border-[var(--accent)]/50 bg-[var(--bg2)]/80 text-[var(--fg)] active:scale-95 transition-all shadow-md"
@@ -193,7 +289,7 @@ export default function App() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <nav className="flex flex-col items-center gap-8 font-mono text-lg uppercase tracking-widest text-[var(--muted)]">
+        <nav className="flex flex-col items-center gap-7 font-mono text-lg uppercase tracking-widest text-[var(--muted)]">
           {nav.map(([h, l], i) => (
             <a
               key={h}
@@ -205,15 +301,30 @@ export default function App() {
               <span className="text-[var(--fg)] text-xl font-bold tracking-wider">{l}</span>
             </a>
           ))}
+          <div className="pt-4 flex gap-4">
+            <button onClick={copyEmailToClipboard} className="text-xs font-mono text-[var(--accent)] border border-[var(--line)] rounded-full px-4 py-2 bg-[var(--bg2)]">
+              Copy Email
+            </button>
+            <button onClick={() => { setMobileMenuOpen(false); setTerminalOpen(true); }} className="text-xs font-mono text-[var(--fg)] border border-[var(--accent)] rounded-full px-4 py-2 bg-[var(--accent)]/10">
+              Open Shell
+            </button>
+          </div>
         </nav>
       </div>
 
       <main id="top" className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10">
         {/* HERO */}
         <section className="min-h-screen flex flex-col justify-center pt-28 pb-16">
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-[var(--accent)] mb-7">
-            {profile.headline}
-          </p>
+          <div className="flex items-center gap-3 mb-6">
+            <span className="pulse-beacon">
+              <span />
+              <span />
+            </span>
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-[var(--accent)]">
+              {profile.headline}
+            </p>
+          </div>
+
           <h1 className="serif-name text-[clamp(2.75rem,10.5vw,8.5rem)] text-[var(--fg)]">
             {firstName}
             <br />
@@ -231,11 +342,20 @@ export default function App() {
             </ul>
           </div>
 
-          <a href="#highlights"
-            className="group mt-14 inline-flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-[var(--muted)] hover:text-[var(--fg)] transition-colors">
-            <span className="h-10 w-10 rounded-full border border-[var(--line)] grid place-items-center group-hover:border-[var(--accent)] group-hover:text-[var(--accent)] transition-colors">↓</span>
-            Scroll to explore
-          </a>
+          <div className="mt-14 flex items-center gap-6">
+            <a href="#highlights"
+              className="group inline-flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-[var(--muted)] hover:text-[var(--fg)] transition-colors">
+              <span className="h-10 w-10 rounded-full border border-[var(--line)] grid place-items-center group-hover:border-[var(--accent)] group-hover:text-[var(--accent)] transition-colors">↓</span>
+              Scroll to explore
+            </a>
+            <button 
+              onClick={() => setTerminalOpen(true)}
+              className="hidden sm:inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[var(--accent)] border border-[var(--line)] hover:border-[var(--accent)]/50 rounded-full px-4 py-2.5 bg-[var(--bg2)]/60 transition-all cursor-none"
+            >
+              <span>Launch Terminal</span>
+              <kbd className="kbd-badge">T</kbd>
+            </button>
+          </div>
         </section>
 
         {/* HIGHLIGHTS */}
@@ -244,7 +364,8 @@ export default function App() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {achievements.map((a, i) => (
               <div key={a.title + a.year} data-reveal
-                className="group border border-[var(--line)] rounded-xl p-6 bg-[var(--bg2)]/40 hover:border-[var(--accent)]/40 hover:bg-[var(--bg2)] transition-colors">
+                onMouseMove={handleCardMouseMove}
+                className="spotlight-card rounded-xl p-6 bg-[var(--bg2)]/40 hover:bg-[var(--bg2)] transition-all">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-xs text-[var(--accent)]">0{i + 1}</span>
                   <span className="font-mono text-xs text-[var(--muted)]">{a.year}</span>
@@ -272,7 +393,6 @@ export default function App() {
                   loading="lazy"
                   className="absolute inset-0 h-full w-full object-cover object-[center_top] transition-transform duration-500 group-hover:scale-[1.04]"
                 />
-                {/* gentle fade into the page background at the bottom edge only */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)]/80 via-transparent to-transparent" />
                 <div className="absolute inset-0 ring-1 ring-inset ring-[var(--accent)]/0 group-hover:ring-[var(--accent)]/40 transition duration-500 rounded-xl" />
               </div>
@@ -286,18 +406,13 @@ export default function App() {
                   { label: "🏆 2× ICPC Dhaka Regionalist" },
                   { label: "🤖 AI Data Trainer · GenMorphics" },
                   { label: "⚡ Model Context Protocol (MCP)" },
-                ].map((chip) =>
-                  chip.href ? (
-                    <a key={chip.label} href={chip.href} target="_blank" rel="noreferrer"
-                      className="font-mono text-xs text-[var(--muted)] border border-[var(--line)] rounded-full px-3 py-1.5 hover:border-[var(--accent)]/50 hover:text-[var(--accent)] transition-colors">
-                      {chip.label} ↗
-                    </a>
-                  ) : (
-                    <span key={chip.label} className="font-mono text-xs text-[var(--muted)] border border-[var(--line)] rounded-full px-3 py-1.5">{chip.label}</span>
-                  )
-                )}
+                ].map((chip) => (
+                  <span key={chip.label} className="font-mono text-xs text-[var(--muted)] border border-[var(--line)] rounded-full px-3 py-1.5 bg-[var(--bg)]/40">
+                    {chip.label}
+                  </span>
+                ))}
               </div>
-              <Socials className="mt-auto pt-7" />
+              <Socials className="mt-auto pt-7" onCopyEmail={copyEmailToClipboard} />
             </div>
           </div>
 
@@ -318,7 +433,8 @@ export default function App() {
               <div className="md:col-span-8 grid sm:grid-cols-2 gap-4 content-start">
                 {experience.map((x) => (
                   <div key={x.role + x.org}
-                    className="border border-[var(--line)] rounded-xl p-6 bg-[var(--bg2)]/40 hover:border-[var(--accent)]/40 transition-colors">
+                    onMouseMove={handleCardMouseMove}
+                    className="spotlight-card rounded-xl p-6 bg-[var(--bg2)]/40 hover:bg-[var(--bg2)] transition-all">
                     <p className="display text-lg text-[var(--fg)] leading-snug">{x.role}</p>
                     {x.url ? (
                       <a href={x.url} target="_blank" rel="noreferrer" className="text-[15px] text-[var(--accent)] mt-1 inline-block hover:underline">{x.org} ↗</a>
@@ -334,7 +450,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* PROJECTS (renders when you add repos to data.js) */}
+        {/* PROJECTS */}
         {projects.length > 0 && (
           <section id="projects" className="py-16 sm:py-24">
             <SectionHead n="03" title="Projects" />
@@ -348,7 +464,7 @@ export default function App() {
                   className={`font-mono text-xs uppercase tracking-wider px-4 py-1.5 rounded-full border transition-all cursor-none ${
                     activeTag === tag
                       ? "bg-[var(--accent)] text-[#0b1220] border-[var(--accent)] font-semibold shadow-[0_0_12px_var(--accent)]"
-                      : "text-[var(--muted)] border-[var(--line)] hover:text-[var(--fg)] hover:border-[var(--accent)]/50"
+                      : "text-[var(--muted)] border-[var(--line)] hover:text-[var(--fg)] hover:border-[var(--accent)]/50 bg-[var(--bg2)]/30"
                   }`}
                 >
                   {tag}
@@ -359,15 +475,16 @@ export default function App() {
             <div className="grid sm:grid-cols-2 gap-4">
               {filteredProjects.map((p) => (
                 <a key={p.title} href={p.demo || p.repo || "#"} target="_blank" rel="noreferrer"
-                  className="group border border-[var(--line)] rounded-xl p-6 bg-[var(--bg2)]/40 hover:border-[var(--accent)]/40 transition-colors">
+                  onMouseMove={handleCardMouseMove}
+                  className="spotlight-card rounded-xl p-6 bg-[var(--bg2)]/40 hover:bg-[var(--bg2)] transition-all">
                   <div className="flex items-center justify-between">
                     <h3 className="display text-xl text-[var(--fg)] group-hover:text-[var(--accent)] transition-colors">{p.title}</h3>
                     <span className="text-[var(--muted)] group-hover:text-[var(--accent)] group-hover:translate-x-0.5 transition-all">↗</span>
                   </div>
                   <p className="text-[15px] text-[var(--muted)] mt-2 leading-relaxed">{p.description}</p>
-                  <div className="flex flex-wrap gap-2 mt-3">
+                  <div className="flex flex-wrap gap-2 mt-4">
                     {p.tags.map((t) => (
-                      <span key={t} className="font-mono text-[10px] uppercase tracking-wider text-[var(--muted)] border border-[var(--line)] rounded px-2 py-0.5">{t}</span>
+                      <span key={t} className="font-mono text-[10px] uppercase tracking-wider text-[var(--muted)] border border-[var(--line)] rounded px-2 py-0.5 bg-[var(--bg)]/60">{t}</span>
                     ))}
                   </div>
                 </a>
@@ -390,19 +507,21 @@ export default function App() {
           <div className="marquee overflow-hidden border-y border-[var(--line)] py-5 mb-10" data-reveal>
             <div className="marquee-track">
               {[...allSkills, ...allSkills].map((s, i) => (
-                <span key={i} className="display text-2xl sm:text-3xl text-[var(--fg)]/60 mx-5">
+                <span key={i} className="display text-2xl sm:text-3xl text-[var(--fg)]/60 mx-5 hover:text-[var(--accent)] transition-colors cursor-none">
                   {s}<span className="text-[var(--accent)] mx-5">/</span>
                 </span>
               ))}
             </div>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" data-reveal>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4" data-reveal>
             {skills.map((s) => (
-              <div key={s.group} className="border border-[var(--line)] rounded-xl p-6 bg-[var(--bg2)]/40 hover:border-[var(--accent)]/40 transition-colors">
+              <div key={s.group} 
+                onMouseMove={handleCardMouseMove}
+                className="spotlight-card rounded-xl p-5 bg-[var(--bg2)]/40 hover:bg-[var(--bg2)] transition-all">
                 <h4 className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] mb-4">{s.group}</h4>
                 <ul className="space-y-2">
                   {s.items.map((it) => (
-                    <li key={it} className="text-[15px] text-[var(--muted)] hover:text-[var(--fg)] transition-colors">{it}</li>
+                    <li key={it} className="text-[14px] text-[var(--muted)] hover:text-[var(--fg)] transition-colors">{it}</li>
                   ))}
                 </ul>
               </div>
@@ -434,7 +553,8 @@ export default function App() {
                   href={c.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="group border border-[var(--line)] rounded-xl p-5 bg-[var(--bg2)]/40 flex items-start justify-between gap-3 hover:border-[var(--accent)]/50 hover:bg-[var(--bg2)] hover:shadow-lg hover:shadow-[var(--accent)]/5 transition-all"
+                  onMouseMove={handleCardMouseMove}
+                  className="spotlight-card rounded-xl p-5 bg-[var(--bg2)]/40 flex items-start justify-between gap-3 hover:bg-[var(--bg2)] transition-all group"
                   title="View Certificate PDF"
                 >
                   {inner}
@@ -442,7 +562,8 @@ export default function App() {
               ) : (
                 <div
                   key={c.title}
-                  className="border border-[var(--line)] rounded-xl p-5 bg-[var(--bg2)]/40 flex items-start justify-between gap-3 hover:border-[var(--accent)]/40 transition-colors"
+                  onMouseMove={handleCardMouseMove}
+                  className="spotlight-card rounded-xl p-5 bg-[var(--bg2)]/40 flex items-start justify-between gap-3 transition-all"
                 >
                   {inner}
                 </div>
@@ -455,24 +576,170 @@ export default function App() {
         <section id="contact" className="py-20 sm:py-28 text-center" data-reveal>
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-[var(--accent)] mb-6">( Let's talk )</p>
           <p className="max-w-xl mx-auto text-lg leading-relaxed text-[var(--muted)] mb-6">
-            I'm open to AI/ML &amp; Data roles and collaborations. The fastest way to reach me is email.
+            I'm open to Backend AI, ML Engineering &amp; Distributed Systems roles. The fastest way to reach me is email.
           </p>
-          <a href={`mailto:${profile.email}`}
-            className="serif-name italic text-[clamp(2.5rem,8vw,5.5rem)] text-[var(--fg)] hover:text-[var(--accent)] transition-colors">
+          <a 
+            href={`mailto:${profile.email}`}
+            className="serif-name italic text-[clamp(2.5rem,8vw,5.5rem)] text-[var(--fg)] hover:text-[var(--accent)] transition-colors inline-block"
+          >
             Say hello
           </a>
-          <p className="font-mono text-sm text-[var(--muted)] mt-6">{profile.email}</p>
-          <Socials className="justify-center mt-9" />
+          <div className="mt-6 flex items-center justify-center gap-4">
+            <button 
+              onClick={copyEmailToClipboard}
+              className="font-mono text-sm text-[var(--accent)] border border-[var(--accent)]/30 hover:border-[var(--accent)] rounded-full px-4 py-1.5 bg-[var(--accent)]/5 hover:bg-[var(--accent)]/15 transition-all cursor-none shadow-sm flex items-center gap-2"
+            >
+              <span>{profile.email}</span>
+              <span className="text-xs opacity-75">{emailCopied ? "✓ Copied" : "📋 Click to Copy"}</span>
+            </button>
+          </div>
+          <Socials className="justify-center mt-9" onCopyEmail={copyEmailToClipboard} />
         </section>
       </main>
 
-      <footer className="relative z-10 border-t border-[var(--line)]">
-        <div className="max-w-6xl mx-auto px-6 sm:px-10 py-8 flex flex-col sm:flex-row gap-3 justify-between font-mono text-xs uppercase tracking-widest text-[var(--muted)]">
-          <span>© {new Date().getFullYear()} {profile.name}</span>
-          <span>Built with React + Canvas</span>
+      {/* RICH INTERACTIVE FOOTER */}
+      <footer className="relative z-10 border-t border-[var(--line)] bg-[var(--bg)]/90 backdrop-blur-2xl pt-16 pb-12">
+        <div className="max-w-6xl mx-auto px-6 sm:px-10">
+          {/* Top Row: Brand & Live Status Bar */}
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 pb-12 border-b border-[var(--line)]">
+            <div>
+              <div className="flex items-center gap-3">
+                <h3 className="serif-name text-3xl sm:text-4xl text-[var(--fg)]">
+                  {profile.name}
+                </h3>
+                <span className="pulse-beacon">
+                  <span />
+                  <span />
+                </span>
+              </div>
+              <p className="font-mono text-xs uppercase tracking-widest text-[var(--muted)] mt-2">
+                Backend AI Systems · Distributed Quotas · Model Context Protocol (MCP)
+              </p>
+            </div>
+
+            {/* Live Telemetry Pill */}
+            <div className="flex flex-wrap items-center gap-3 bg-[var(--bg2)] border border-[var(--line)] rounded-2xl p-3 sm:px-5 font-mono text-xs">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[var(--fg)] font-semibold">Dhaka, BD (UTC+6):</span>
+                <span className="text-[var(--accent)]">{dhakaTime || "Live"}</span>
+              </div>
+              <span className="text-[var(--line)] hidden sm:inline">|</span>
+              <span className="text-emerald-400 font-medium">Available for Hiring</span>
+            </div>
+          </div>
+
+          {/* Middle Row: Sitemap, Connect & System Navigation */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 py-12 border-b border-[var(--line)] font-mono text-xs">
+            {/* Column 1: Navigation Index */}
+            <div>
+              <h4 className="text-[var(--accent)] uppercase tracking-widest font-semibold mb-4">
+                Directory Index
+              </h4>
+              <ul className="space-y-2.5 uppercase tracking-wider text-[var(--muted)]">
+                {nav.map(([h, l], idx) => (
+                  <li key={h}>
+                    <a href={`#${h}`} className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between">
+                      <span>0{idx + 1} // {l}</span>
+                      <span className="opacity-40">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 2: Direct Connect */}
+            <div>
+              <h4 className="text-[var(--accent)] uppercase tracking-widest font-semibold mb-4">
+                Direct Connect
+              </h4>
+              <ul className="space-y-2.5 uppercase tracking-wider text-[var(--muted)]">
+                <li>
+                  <a href={profile.socials.github} target="_blank" rel="noreferrer" className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between">
+                    <span>GitHub Profile</span>
+                    <span className="text-[var(--accent)]">↗</span>
+                  </a>
+                </li>
+                <li>
+                  <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between">
+                    <span>LinkedIn Network</span>
+                    <span className="text-[var(--accent)]">↗</span>
+                  </a>
+                </li>
+                <li>
+                  <button onClick={copyEmailToClipboard} className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between w-full text-left cursor-none">
+                    <span>Direct Email ({emailCopied ? "Copied! ✓" : "Copy"})</span>
+                    <span className="text-[var(--accent)]">📋</span>
+                  </button>
+                </li>
+                <li>
+                  <a href={`${profile.resumeUrl}?v=3`} target="_blank" rel="noreferrer" className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between">
+                    <span>PDF Résumé (1-Page ATS)</span>
+                    <span className="text-[var(--accent)]">↗</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 3: Telemetry & Terminal Command */}
+            <div>
+              <h4 className="text-[var(--accent)] uppercase tracking-widest font-semibold mb-4">
+                System &amp; Controls
+              </h4>
+              <div className="bg-[var(--bg2)]/60 border border-[var(--line)] rounded-xl p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[var(--muted)]">Terminal Shell</span>
+                  <button 
+                    onClick={() => setTerminalOpen(true)}
+                    className="text-[var(--accent)] hover:text-[var(--fg)] border border-[var(--accent)]/40 rounded px-2 py-0.5 bg-[var(--accent)]/10 transition-all cursor-none flex items-center gap-1.5"
+                  >
+                    <span>Launch [^]</span>
+                    <kbd className="kbd-badge text-[9px]">T</kbd>
+                  </button>
+                </div>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-[var(--muted)]">Section Jump</span>
+                  <span className="text-[var(--muted)]">Keys <kbd className="kbd-badge text-[9px]">1</kbd>–<kbd className="kbd-badge text-[9px]">6</kbd></span>
+                </div>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-[var(--muted)]">Theme Accent</span>
+                  <button 
+                    onClick={() => setThemeIdx((prev) => (prev + 1) % themes.length)}
+                    className="text-[var(--accent)] hover:underline cursor-none"
+                  >
+                    Cycle Theme ({themes[themeIdx].name})
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Row: Copyright & Back-to-Top Button */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-between items-center pt-8 font-mono text-xs uppercase tracking-widest text-[var(--muted)]">
+            <div className="flex items-center gap-2">
+              <span>© {new Date().getFullYear()} {profile.name}</span>
+              <span className="opacity-40">·</span>
+              <span>Dhaka, Bangladesh</span>
+            </div>
+
+            {/* Back to top smooth scroll */}
+            <button
+              onClick={scrollToTop}
+              className="group flex items-center gap-2 border border-[var(--line)] hover:border-[var(--accent)]/60 rounded-full px-4 py-2 bg-[var(--bg2)] hover:bg-[var(--bg2)] text-[var(--fg)] transition-all cursor-none shadow-sm active:scale-95"
+            >
+              <span>Back to Top</span>
+              <span className="text-[var(--accent)] group-hover:-translate-y-0.5 transition-transform">↑</span>
+            </button>
+          </div>
         </div>
       </footer>
-      <Terminal onThemeChange={handleThemeChange} />
+
+      {/* Interactive Omega Terminal Shell */}
+      <Terminal 
+        isOpen={terminalOpen} 
+        setIsOpen={setTerminalOpen} 
+        onThemeChange={handleThemeChange} 
+      />
     </div>
   )
 }
