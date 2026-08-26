@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react"
 
-// Interactive neuron constellation. Nodes drift slowly; the cursor attracts and
-// lights up nearby nodes, drawing live "synapse" connections.
-// Features theme-aware dynamic color syncing and click shockwave impulses.
+// Optimized Interactive Neuron Constellation.
+// Ultra-smooth 60/120fps with zero layout thrash and mobile-adaptive density.
 export default function NeuralField() {
   const ref = useRef(null)
 
@@ -16,6 +15,7 @@ export default function NeuralField() {
     let raf = 0
     let hidden = false
     let inView = true
+    let frameCount = 0
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -25,7 +25,6 @@ export default function NeuralField() {
     }, { threshold: 0 })
     observer.observe(canvas)
 
-    // pause animation when tab is hidden
     function onVisibility() {
       hidden = document.hidden
       if (!hidden && inView && !raf) loop()
@@ -33,25 +32,22 @@ export default function NeuralField() {
     document.addEventListener("visibilitychange", onVisibility)
 
     const mouse = { x: -9999, y: -9999 }
-    const LINK = 135          // connection distance between nodes
-    const MOUSE_R = 200       // cursor influence radius
+    const LINK = 130
+    const LINK_SQ = LINK * LINK
+    const MOUSE_R = 190
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
-    // Dynamic accent color parser
     let currentAccent = [59, 130, 246]
     const warm = [215, 225, 240]
 
-    function updateAccentFromCSS() {
+    function parseAccent() {
       const computed = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()
-      if (computed.startsWith('#')) {
-        const hex = computed.replace('#', '')
-        if (hex.length === 6) {
-          currentAccent = [
-            parseInt(hex.substring(0, 2), 16),
-            parseInt(hex.substring(2, 4), 16),
-            parseInt(hex.substring(4, 6), 16)
-          ]
-        }
+      if (computed.startsWith('#') && computed.length === 7) {
+        currentAccent = [
+          parseInt(computed.slice(1, 3), 16),
+          parseInt(computed.slice(3, 5), 16),
+          parseInt(computed.slice(5, 7), 16)
+        ]
       }
     }
 
@@ -59,28 +55,33 @@ export default function NeuralField() {
       w = canvas.clientWidth
       h = canvas.clientHeight
       const mobile = w < 768
-      dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2)
+      dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.25 : 1.75)
       canvas.width = w * dpr
       canvas.height = h * dpr
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       
-      const density = mobile ? 32000 : 12000
-      const count = Math.min(mobile ? 45 : 170, Math.floor((w * h) / density))
+      parseAccent()
+      const count = mobile ? 26 : Math.min(80, Math.floor((w * h) / 16000))
       nodes = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.22,
-        vy: (Math.random() - 0.5) * 0.22,
-        r: Math.random() * 1.5 + 0.8,
+        vx: (Math.random() - 0.5) * (mobile ? 0.14 : 0.22),
+        vy: (Math.random() - 0.5) * (mobile ? 0.14 : 0.22),
+        r: Math.random() * 1.3 + 0.7,
         glow: 0,
       }))
     }
 
     function step() {
       ctx.clearRect(0, 0, w, h)
-      updateAccentFromCSS()
+      
+      // Only refresh accent color every 45 frames to eliminate style recalcs
+      frameCount++
+      if (frameCount % 45 === 0) parseAccent()
 
-      // Update and render shockwaves
+      const [r, g, b] = currentAccent
+
+      // Render shockwaves
       for (let s = shockwaves.length - 1; s >= 0; s--) {
         const sw = shockwaves[s]
         sw.r += sw.speed
@@ -91,102 +92,97 @@ export default function NeuralField() {
           continue
         }
 
-        ctx.save()
         ctx.beginPath()
         ctx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2)
-        ctx.strokeStyle = `rgba(${currentAccent[0]}, ${currentAccent[1]}, ${currentAccent[2]}, ${sw.opacity * 0.6})`
-        ctx.lineWidth = 2 * sw.opacity
+        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${sw.opacity * 0.5})`
+        ctx.lineWidth = 1.8 * sw.opacity
         ctx.stroke()
-        ctx.restore()
 
-        // Push nearby nodes and light them up
         for (const n of nodes) {
           const d = Math.hypot(n.x - sw.x, n.y - sw.y)
-          if (Math.abs(d - sw.r) < 35) {
-            n.glow = Math.min(1.5, n.glow + 0.35)
+          if (Math.abs(d - sw.r) < 30) {
+            n.glow = Math.min(1.4, n.glow + 0.3)
             const angle = Math.atan2(n.y - sw.y, n.x - sw.x)
-            n.vx += Math.cos(angle) * 0.3
-            n.vy += Math.sin(angle) * 0.3
+            n.vx += Math.cos(angle) * 0.25
+            n.vy += Math.sin(angle) * 0.25
           }
         }
       }
 
+      // Update positions & cursor interaction
       for (const n of nodes) {
         n.x += n.vx
         n.y += n.vy
         n.vx *= 0.99
         n.vy *= 0.99
-        if (Math.abs(n.vx) < 0.1) n.vx += (Math.random() - 0.5) * 0.05
-        if (Math.abs(n.vy) < 0.1) n.vy += (Math.random() - 0.5) * 0.05
 
         if (n.x < 0) { n.x = 0; n.vx *= -1 }
         if (n.x > w) { n.x = w; n.vx *= -1 }
         if (n.y < 0) { n.y = 0; n.vy *= -1 }
         if (n.y > h) { n.y = h; n.vy *= -1 }
 
-        // Cursor attraction + glow
         const dx = mouse.x - n.x
         const dy = mouse.y - n.y
         const d = Math.hypot(dx, dy)
         if (d < MOUSE_R) {
-          const f = (1 - d / MOUSE_R) * 0.7
+          const f = (1 - d / MOUSE_R) * 0.65
           n.x += (dx / (d || 1)) * f
           n.y += (dy / (d || 1)) * f
-          n.glow = Math.min(1, n.glow + 0.1)
+          n.glow = Math.min(1, n.glow + 0.08)
           
-          // Synapse from cursor to node
-          ctx.strokeStyle = `rgba(${currentAccent[0]},${currentAccent[1]},${currentAccent[2]},${(1 - d / MOUSE_R) * 0.75})`
-          ctx.lineWidth = 0.9
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${(1 - d / MOUSE_R) * 0.7})`
+          ctx.lineWidth = 0.85
           ctx.beginPath()
           ctx.moveTo(mouse.x, mouse.y)
           ctx.lineTo(n.x, n.y)
           ctx.stroke()
         } else {
-          n.glow *= 0.93
+          n.glow *= 0.94
         }
       }
 
-      // Node-to-node links
-      for (let i = 0; i < nodes.length; i++) {
+      // Node connections
+      const nLen = nodes.length
+      for (let i = 0; i < nLen; i++) {
         const a = nodes[i]
-        for (let j = i + 1; j < nodes.length; j++) {
-          const b = nodes[j]
-          const dx = a.x - b.x
-          const dy = a.y - b.y
+        for (let j = i + 1; j < nLen; j++) {
+          const bn = nodes[j]
+          const dx = a.x - bn.x
+          const dy = a.y - bn.y
           const d2 = dx * dx + dy * dy
-          if (d2 < LINK * LINK) {
+          if (d2 < LINK_SQ) {
             const t = 1 - Math.sqrt(d2) / LINK
-            const lit = Math.max(a.glow, b.glow)
+            const lit = Math.max(a.glow, bn.glow)
             const c = lit > 0.05 ? currentAccent : warm
-            ctx.strokeStyle = `rgba(${c[0]},${c[1]},${c[2]},${t * (0.18 + lit * 0.6)})`
-            ctx.lineWidth = 0.6 + lit * 0.8
+            ctx.strokeStyle = `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${t * (0.16 + lit * 0.55)})`
+            ctx.lineWidth = 0.55 + lit * 0.7
             ctx.beginPath()
             ctx.moveTo(a.x, a.y)
-            ctx.lineTo(b.x, b.y)
+            ctx.lineTo(bn.x, bn.y)
             ctx.stroke()
           }
         }
       }
 
-      // Render nodes
+      // Draw nodes
       for (const n of nodes) {
         const glowVal = Math.min(1, n.glow)
         const c = glowVal > 0.05
           ? [
-              warm[0] + (currentAccent[0] - warm[0]) * glowVal,
-              warm[1] + (currentAccent[1] - warm[1]) * glowVal,
-              warm[2] + (currentAccent[2] - warm[2]) * glowVal,
+              warm[0] + (r - warm[0]) * glowVal,
+              warm[1] + (g - warm[1]) * glowVal,
+              warm[2] + (b - warm[2]) * glowVal,
             ]
           : warm
         ctx.beginPath()
-        ctx.arc(n.x, n.y, n.r + glowVal * 1.8, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(${c[0]|0},${c[1]|0},${c[2]|0},${0.6 + glowVal * 0.4})`
+        ctx.arc(n.x, n.y, n.r + glowVal * 1.5, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(${c[0]|0}, ${c[1]|0}, ${c[2]|0}, ${0.55 + glowVal * 0.45})`
         ctx.fill()
         
-        if (glowVal > 0.12) {
+        if (glowVal > 0.15) {
           ctx.beginPath()
-          ctx.arc(n.x, n.y, n.r + 9 * glowVal, 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(${currentAccent[0]},${currentAccent[1]},${currentAccent[2]},${glowVal * 0.22})`
+          ctx.arc(n.x, n.y, n.r + 7 * glowVal, 0, Math.PI * 2)
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${glowVal * 0.18})`
           ctx.fill()
         }
       }
@@ -213,9 +209,9 @@ export default function NeuralField() {
         x: e.clientX,
         y: e.clientY,
         r: 5,
-        maxR: 280,
-        speed: 8,
-        opacity: 0.9
+        maxR: 240,
+        speed: 7,
+        opacity: 0.85
       })
     }
 
@@ -224,7 +220,7 @@ export default function NeuralField() {
     else step()
 
     window.addEventListener("resize", build)
-    window.addEventListener("mousemove", onMove)
+    window.addEventListener("mousemove", onMove, { passive: true })
     window.addEventListener("mouseout", onLeave)
     window.addEventListener("click", onClick)
     
@@ -242,7 +238,7 @@ export default function NeuralField() {
   return (
     <canvas
       ref={ref}
-      className="fixed inset-0 -z-10 h-full w-full"
+      className="fixed inset-0 -z-10 h-full w-full pointer-events-none"
       style={{ background: "radial-gradient(120% 120% at 50% 0%, #08101e 0%, #000000 65%)" }}
       aria-hidden="true"
     />

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 
 // Interactive Quantum Wave Grid for the Footer.
-// Renders flowing perspective terrain with mouse interactivity and theme accent sync.
+// Optimized 60fps rendering with mobile-adaptive line density and zero layout thrash.
 export default function FooterMeshCanvas() {
   const canvasRef = useRef(null)
 
@@ -14,6 +14,8 @@ export default function FooterMeshCanvas() {
     let time = 0
     let inView = false
     let hidden = false
+    let frameCount = 0
+    let isMobile = false
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -35,35 +37,33 @@ export default function FooterMeshCanvas() {
 
     let accentRGB = [59, 130, 246]
 
-    function updateAccent() {
+    function parseAccent() {
       const computed = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()
-      if (computed.startsWith('#')) {
-        const hex = computed.replace('#', '')
-        if (hex.length === 6) {
-          accentRGB = [
-            parseInt(hex.substring(0, 2), 16),
-            parseInt(hex.substring(2, 4), 16),
-            parseInt(hex.substring(4, 6), 16)
-          ]
-        }
+      if (computed.startsWith('#') && computed.length === 7) {
+        accentRGB = [
+          parseInt(computed.slice(1, 3), 16),
+          parseInt(computed.slice(3, 5), 16),
+          parseInt(computed.slice(5, 7), 16)
+        ]
       }
     }
 
     function resize() {
       w = canvas.clientWidth
       h = canvas.clientHeight
-      dpr = Math.min(window.devicePixelRatio || 1, 2)
+      isMobile = w < 768
+      dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 1.75)
       canvas.width = w * dpr
       canvas.height = h * dpr
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      parseAccent()
     }
-
-    const LINES = 14
-    const POINTS = 36
 
     function render() {
       ctx.clearRect(0, 0, w, h)
-      updateAccent()
+      
+      frameCount++
+      if (frameCount % 45 === 0) parseAccent()
       time += 0.015
 
       // Smooth mouse interpolation
@@ -72,6 +72,8 @@ export default function FooterMeshCanvas() {
 
       const [r, g, b] = accentRGB
       const baseAlpha = 0.12
+      const LINES = isMobile ? 8 : 12
+      const POINTS = isMobile ? 22 : 32
 
       for (let i = 0; i < LINES; i++) {
         const lineProgress = i / (LINES - 1)
@@ -85,15 +87,13 @@ export default function FooterMeshCanvas() {
         for (let j = 0; j <= POINTS; j++) {
           const x = (j / POINTS) * w
           
-          // Wave equation combining 3 harmonics
-          const wave1 = Math.sin(j * 0.25 + time * 1.5 + i * 0.4) * (14 + lineProgress * 18)
-          const wave2 = Math.cos(j * 0.12 - time * 0.8 + i * 0.3) * (8 + lineProgress * 10)
+          const wave1 = Math.sin(j * 0.25 + time * 1.5 + i * 0.4) * (12 + lineProgress * 16)
+          const wave2 = Math.cos(j * 0.12 - time * 0.8 + i * 0.3) * (7 + lineProgress * 9)
           
-          // Mouse interaction (repulsion & crest elevation)
           const distToMouse = Math.hypot(x - mouse.x, baseY - mouse.y)
           let mouseFactor = 0
-          if (distToMouse < 220) {
-            mouseFactor = (1 - distToMouse / 220) * 35
+          if (distToMouse < 200) {
+            mouseFactor = (1 - distToMouse / 200) * 30
           }
 
           const y = baseY + wave1 + wave2 - mouseFactor
@@ -104,14 +104,9 @@ export default function FooterMeshCanvas() {
             ctx.lineTo(x, y)
           }
 
-          // Draw small glowing nodes at intersections
-          if (j % 4 === 0 && lineProgress > 0.3) {
-            ctx.save()
+          if (j % 4 === 0 && lineProgress > 0.35) {
             ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * (1.2 + (mouseFactor > 0 ? 2 : 0))})`
-            ctx.beginPath()
-            ctx.arc(x, y, 1.2 + (mouseFactor > 0 ? 1.5 : 0), 0, Math.PI * 2)
-            ctx.fill()
-            ctx.restore()
+            ctx.fillRect(x - 1, y - 1, 2, 2)
           }
         }
         ctx.stroke()
@@ -141,7 +136,7 @@ export default function FooterMeshCanvas() {
     else render()
 
     window.addEventListener("resize", resize)
-    canvas.addEventListener("mousemove", onMouseMove)
+    canvas.addEventListener("mousemove", onMouseMove, { passive: true })
     canvas.addEventListener("mouseleave", onMouseLeave)
 
     return () => {

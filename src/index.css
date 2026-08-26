@@ -86,14 +86,24 @@ body {
 
 /* ---- scroll reveal ---- */
 [data-reveal] {
-  opacity: 0; transform: translateY(28px);
-  transition: opacity 0.9s cubic-bezier(.22,1,.36,1), transform 0.9s cubic-bezier(.22,1,.36,1);
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
-[data-reveal].is-visible { opacity: 1; transform: none; }
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
 
 /* ---- marquee for skills ---- */
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.marquee-track { display: inline-flex; white-space: nowrap; animation: marquee 32s linear infinite; }
+@keyframes marquee { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+.marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
 .marquee:hover .marquee-track { animation-play-state: paused; }
 
 /* ---- link underline sweep ---- */
@@ -101,7 +111,7 @@ body {
 .link-sweep::after {
   content: ""; position: absolute; left: 0; bottom: -2px; height: 1px; width: 100%;
   background: var(--accent); transform: scaleX(0); transform-origin: right;
-  transition: transform .4s cubic-bezier(.22,1,.36,1);
+  transition: transform .35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .link-sweep:hover::after { transform: scaleX(1); transform-origin: left; }
 
@@ -111,21 +121,22 @@ body {
   background: var(--bg2);
   border: 1px solid var(--line);
   overflow: hidden;
-  transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+  transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  will-change: transform, border-color, box-shadow;
 }
 .spotlight-card:hover {
   border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.7), 0 0 20px -5px var(--accent);
-  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.7), 0 0 20px -5px var(--accent);
+  transform: translateY(-3px);
 }
 .spotlight-card::before {
   content: "";
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(600px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(59, 130, 246, 0.08), transparent 40%);
+  background: radial-gradient(500px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(59, 130, 246, 0.08), transparent 45%);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.3s ease;
 }
 .spotlight-card:hover::before {
   opacity: 1;

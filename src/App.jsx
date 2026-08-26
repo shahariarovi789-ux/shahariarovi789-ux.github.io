@@ -13,8 +13,15 @@ function useReveal() {
   useEffect(() => {
     const els = document.querySelectorAll("[data-reveal]")
     const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("is-visible")),
-      { threshold: 0.1 }
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible")
+            io.unobserve(e.target)
+          }
+        })
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
     )
     els.forEach((el) => io.observe(el))
     return () => io.disconnect()
@@ -106,27 +113,38 @@ export default function App() {
     document.documentElement.style.setProperty('--accent-soft', t.soft)
   }, [themeIdx])
 
-  // Scroll Progress
+  // Throttled Scroll Listener for buttery 60/120fps
   useEffect(() => {
+    let ticking = false
     const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight
-      if (totalHeight > 0) {
-        setScrollProgress((window.scrollY / totalHeight) * 100)
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 30)
+          const totalHeight = document.documentElement.scrollHeight - window.innerHeight
+          if (totalHeight > 0) {
+            setScrollProgress((window.scrollY / totalHeight) * 100)
+          }
+          ticking = false
+        })
+        ticking = true
       }
     }
     window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll()
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Header background on scroll
+  // Prevent background scroll when mobile menu is open
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => { document.body.style.overflow = "" }
+  }, [mobileMenuOpen])
 
-  // Keyboard Shortcuts (T for terminal, 1-6 for sections, Esc to close)
+  // Keyboard Shortcuts (T for terminal, 1-7 for sections, Esc to close)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) {
@@ -167,6 +185,7 @@ export default function App() {
   }
 
   const handleCardMouseMove = (e) => {
+    if (window.matchMedia("(hover: none)").matches) return
     const rect = e.currentTarget.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
@@ -202,10 +221,10 @@ export default function App() {
         </div>
       )}
       
-      {/* Scroll Progress Bar */}
+      {/* GPU-Accelerated Scroll Progress Bar */}
       <div 
-        className="fixed top-0 left-0 h-[3px] bg-[var(--accent)] z-50 transition-all duration-100" 
-        style={{ width: `${scrollProgress}%`, boxShadow: "0 0 12px var(--accent)" }} 
+        className="fixed top-0 left-0 right-0 h-[3px] bg-[var(--accent)] z-50 transition-transform duration-75 ease-out origin-left pointer-events-none" 
+        style={{ transform: `scaleX(${scrollProgress / 100})`, boxShadow: "0 0 10px var(--accent)" }} 
       />
 
       {/* Header */}
@@ -692,7 +711,7 @@ export default function App() {
                 </li>
                 <li>
                   <a href={`${profile.resumeUrl}?v=3`} target="_blank" rel="noreferrer" className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between group">
-                    <span>PDF Résumé (1-Page ATS)</span>
+                    <span>PDF Résumé</span>
                     <span className="text-[var(--accent)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
                   </a>
                 </li>
