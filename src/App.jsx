@@ -733,15 +733,15 @@ export default function App() {
             </div>
           </div>
 
-          {/* Interactive Letter-by-Letter Neon Glow Signature (Single Line Display) */}
-          <div className="pt-10 pb-4 select-none w-full flex justify-center text-center">
-            <div className="inline-flex flex-nowrap items-center justify-center gap-3 sm:gap-6 md:gap-8 whitespace-nowrap px-2">
+          {/* Interactive Letter-by-Letter Neon Glow Signature (Large Cinematic Display) */}
+          <div className="pt-14 pb-6 select-none w-full flex justify-center text-center">
+            <div className="inline-flex flex-nowrap items-center justify-center gap-4 sm:gap-7 md:gap-10 whitespace-nowrap px-2">
               {["SHAHARIAR", "ASFAQ", "OVI"].map((word, wIdx) => (
                 <div key={wIdx} className="inline-flex items-center flex-nowrap shrink-0">
                   {word.split("").map((char, cIdx) => (
                     <span
                       key={cIdx}
-                      className="kinetic-letter text-[clamp(1rem,3.4vw,2.75rem)] cursor-none"
+                      className="kinetic-letter text-[clamp(1.35rem,4.4vw,4.25rem)] cursor-none"
                     >
                       {char}
                     </span>
