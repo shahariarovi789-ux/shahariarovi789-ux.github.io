@@ -731,11 +731,22 @@ export default function App() {
             </div>
           </div>
 
-          {/* Kinetic Watermark */}
-          <div className="pt-8 overflow-hidden select-none">
-            <p className="kinetic-watermark text-[clamp(2.5rem,10.5vw,8.5rem)] leading-none text-center whitespace-nowrap opacity-25 hover:opacity-60 transition-opacity">
-              SHAHARIAR ASFAQ OVI
-            </p>
+          {/* Interactive Letter-by-Letter Neon Glow Signature */}
+          <div className="pt-10 pb-2 overflow-hidden select-none text-center">
+            <div className="inline-flex flex-wrap justify-center items-center gap-x-5 sm:gap-x-8 gap-y-1">
+              {["SHAHARIAR", "ASFAQ", "OVI"].map((word, wIdx) => (
+                <div key={wIdx} className="inline-flex items-center">
+                  {word.split("").map((char, cIdx) => (
+                    <span
+                      key={cIdx}
+                      className="kinetic-letter text-[clamp(2.4rem,8.2vw,7rem)] cursor-none"
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Bottom Row: Copyright & Back-to-Top Button */}
