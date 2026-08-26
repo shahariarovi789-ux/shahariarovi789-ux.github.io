@@ -4,6 +4,7 @@ import NeuralField from "./components/NeuralField"
 import Cursor from "./components/Cursor"
 import SentimentAnalyzer from "./components/SentimentAnalyzer"
 import Terminal from "./components/Terminal"
+import FooterMeshCanvas from "./components/FooterMeshCanvas"
 
 const firstName = profile.name.split(" ")[0]
 const lastName = profile.name.split(" ").slice(1).join(" ")
@@ -597,10 +598,16 @@ export default function App() {
         </section>
       </main>
 
-      {/* RICH INTERACTIVE FOOTER */}
-      <footer className="relative z-10 border-t border-[var(--line)] bg-[var(--bg)]/90 backdrop-blur-2xl pt-16 pb-12">
-        <div className="max-w-6xl mx-auto px-6 sm:px-10">
-          {/* Top Row: Brand & Live Status Bar */}
+      {/* RICH INTERACTIVE FOOTER WITH ANIMATIONS */}
+      <footer className="footer-container relative z-10 border-t border-[var(--line)] bg-[var(--bg)]/90 backdrop-blur-2xl pt-20 pb-12 overflow-hidden">
+        {/* Animated Top Border Light Beam */}
+        <div className="footer-beam" />
+
+        {/* Interactive Quantum Wave Mesh Canvas */}
+        <FooterMeshCanvas />
+
+        <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10">
+          {/* Top Row: Brand & Live Radar Telemetry */}
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 pb-12 border-b border-[var(--line)]">
             <div>
               <div className="flex items-center gap-3">
@@ -617,15 +624,23 @@ export default function App() {
               </p>
             </div>
 
-            {/* Live Telemetry Pill */}
-            <div className="flex flex-wrap items-center gap-3 bg-[var(--bg2)] border border-[var(--line)] rounded-2xl p-3 sm:px-5 font-mono text-xs">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            {/* Live Radar Telemetry Card */}
+            <div className="flex flex-wrap items-center gap-3.5 bg-[var(--bg2)]/90 backdrop-blur-md border border-[var(--line)] hover:border-[var(--accent)]/50 rounded-2xl p-3 sm:px-5 font-mono text-xs transition-colors shadow-lg shadow-[var(--bg)]/50">
+              <div className="flex items-center gap-2.5">
+                {/* Animated Radar Spinner */}
+                <div className="relative flex items-center justify-center h-4 w-4">
+                  <div className="absolute inset-0 rounded-full border border-emerald-500/30" />
+                  <div className="absolute inset-0.5 rounded-full border border-dashed border-emerald-400/60 radar-sweep" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
+                </div>
                 <span className="text-[var(--fg)] font-semibold">Dhaka, BD (UTC+6):</span>
-                <span className="text-[var(--accent)]">{dhakaTime || "Live"}</span>
+                <span className="text-[var(--accent)] font-medium">{dhakaTime || "Live"}</span>
               </div>
               <span className="text-[var(--line)] hidden sm:inline">|</span>
-              <span className="text-emerald-400 font-medium">Available for Hiring</span>
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] text-[var(--muted)]">24ms</span>
+                <span className="text-emerald-400 font-medium">● Open to Work</span>
+              </div>
             </div>
           </div>
 
@@ -633,15 +648,16 @@ export default function App() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 py-12 border-b border-[var(--line)] font-mono text-xs">
             {/* Column 1: Navigation Index */}
             <div>
-              <h4 className="text-[var(--accent)] uppercase tracking-widest font-semibold mb-4">
-                Directory Index
+              <h4 className="text-[var(--accent)] uppercase tracking-widest font-semibold mb-4 flex items-center gap-2">
+                <span>Directory Index</span>
+                <span className="text-[10px] opacity-60">[01-06]</span>
               </h4>
               <ul className="space-y-2.5 uppercase tracking-wider text-[var(--muted)]">
                 {nav.map(([h, l], idx) => (
                   <li key={h}>
-                    <a href={`#${h}`} className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between">
+                    <a href={`#${h}`} className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between group">
                       <span>0{idx + 1} // {l}</span>
-                      <span className="opacity-40">→</span>
+                      <span className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
                     </a>
                   </li>
                 ))}
@@ -655,27 +671,27 @@ export default function App() {
               </h4>
               <ul className="space-y-2.5 uppercase tracking-wider text-[var(--muted)]">
                 <li>
-                  <a href={profile.socials.github} target="_blank" rel="noreferrer" className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between">
+                  <a href={profile.socials.github} target="_blank" rel="noreferrer" className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between group">
                     <span>GitHub Profile</span>
-                    <span className="text-[var(--accent)]">↗</span>
+                    <span className="text-[var(--accent)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
                   </a>
                 </li>
                 <li>
-                  <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between">
+                  <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between group">
                     <span>LinkedIn Network</span>
-                    <span className="text-[var(--accent)]">↗</span>
+                    <span className="text-[var(--accent)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
                   </a>
                 </li>
                 <li>
-                  <button onClick={copyEmailToClipboard} className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between w-full text-left cursor-none">
+                  <button onClick={copyEmailToClipboard} className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between w-full text-left cursor-none group">
                     <span>Direct Email ({emailCopied ? "Copied! ✓" : "Copy"})</span>
-                    <span className="text-[var(--accent)]">📋</span>
+                    <span className="text-[var(--accent)] group-hover:scale-110 transition-transform">📋</span>
                   </button>
                 </li>
                 <li>
-                  <a href={`${profile.resumeUrl}?v=3`} target="_blank" rel="noreferrer" className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between">
+                  <a href={`${profile.resumeUrl}?v=3`} target="_blank" rel="noreferrer" className="link-sweep hover:text-[var(--fg)] transition-colors flex items-center justify-between group">
                     <span>PDF Résumé (1-Page ATS)</span>
-                    <span className="text-[var(--accent)]">↗</span>
+                    <span className="text-[var(--accent)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
                   </a>
                 </li>
               </ul>
@@ -684,14 +700,14 @@ export default function App() {
             {/* Column 3: Telemetry & Terminal Command */}
             <div>
               <h4 className="text-[var(--accent)] uppercase tracking-widest font-semibold mb-4">
-                System &amp; Controls
+                System Controls &amp; Shell
               </h4>
-              <div className="bg-[var(--bg2)]/60 border border-[var(--line)] rounded-xl p-4 space-y-3">
+              <div className="bg-[var(--bg2)]/80 backdrop-blur-md border border-[var(--line)] hover:border-[var(--accent)]/40 rounded-xl p-4 space-y-3 transition-colors shadow-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-[var(--muted)]">Terminal Shell</span>
+                  <span className="text-[var(--muted)]">Interactive Shell</span>
                   <button 
                     onClick={() => setTerminalOpen(true)}
-                    className="text-[var(--accent)] hover:text-[var(--fg)] border border-[var(--accent)]/40 rounded px-2 py-0.5 bg-[var(--accent)]/10 transition-all cursor-none flex items-center gap-1.5"
+                    className="text-[var(--accent)] hover:text-[var(--fg)] border border-[var(--accent)]/40 hover:border-[var(--accent)] rounded px-2.5 py-1 bg-[var(--accent)]/10 hover:bg-[var(--accent)]/20 transition-all cursor-none flex items-center gap-1.5"
                   >
                     <span>Launch [^]</span>
                     <kbd className="kbd-badge text-[9px]">T</kbd>
@@ -702,16 +718,24 @@ export default function App() {
                   <span className="text-[var(--muted)]">Keys <kbd className="kbd-badge text-[9px]">1</kbd>–<kbd className="kbd-badge text-[9px]">6</kbd></span>
                 </div>
                 <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-[var(--muted)]">Theme Accent</span>
+                  <span className="text-[var(--muted)]">Accent Palette</span>
                   <button 
                     onClick={() => setThemeIdx((prev) => (prev + 1) % themes.length)}
-                    className="text-[var(--accent)] hover:underline cursor-none"
+                    className="text-[var(--accent)] hover:underline cursor-none flex items-center gap-1"
                   >
-                    Cycle Theme ({themes[themeIdx].name})
+                    <span>{themes[themeIdx].label}</span>
+                    <span className="text-[10px]">⇄</span>
                   </button>
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Kinetic Watermark */}
+          <div className="pt-8 overflow-hidden select-none">
+            <p className="kinetic-watermark text-[clamp(2.5rem,10.5vw,8.5rem)] leading-none text-center whitespace-nowrap opacity-25 hover:opacity-60 transition-opacity">
+              SHAHARIAR ASFAQ OVI
+            </p>
           </div>
 
           {/* Bottom Row: Copyright & Back-to-Top Button */}
@@ -725,10 +749,10 @@ export default function App() {
             {/* Back to top smooth scroll */}
             <button
               onClick={scrollToTop}
-              className="group flex items-center gap-2 border border-[var(--line)] hover:border-[var(--accent)]/60 rounded-full px-4 py-2 bg-[var(--bg2)] hover:bg-[var(--bg2)] text-[var(--fg)] transition-all cursor-none shadow-sm active:scale-95"
+              className="group flex items-center gap-2 border border-[var(--line)] hover:border-[var(--accent)]/60 rounded-full px-5 py-2.5 bg-[var(--bg2)] hover:bg-[var(--bg2)] text-[var(--fg)] transition-all cursor-none shadow-sm active:scale-95"
             >
               <span>Back to Top</span>
-              <span className="text-[var(--accent)] group-hover:-translate-y-0.5 transition-transform">↑</span>
+              <span className="text-[var(--accent)] group-hover:-translate-y-1 transition-transform">↑</span>
             </button>
           </div>
         </div>

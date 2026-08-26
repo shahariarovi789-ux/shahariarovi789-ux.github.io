@@ -181,3 +181,51 @@ body {
   border-radius: 9999px;
   background-color: var(--accent);
 }
+
+/* ---- footer top border photon beam ---- */
+@keyframes borderBeamSweep {
+  0% { transform: translateX(-100%); opacity: 0; }
+  25% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { transform: translateX(250%); opacity: 0; }
+}
+.footer-beam {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 35%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), #93c5fd, transparent);
+  animation: borderBeamSweep 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  filter: drop-shadow(0 0 8px var(--accent));
+  pointer-events: none;
+}
+
+/* ---- radar spinner ---- */
+@keyframes radarSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.radar-sweep {
+  animation: radarSpin 4s linear infinite;
+  transform-origin: center;
+}
+
+/* ---- kinetic watermark ---- */
+.kinetic-watermark {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, rgba(233, 238, 247, 0.08) 0%, rgba(233, 238, 247, 0.01) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+  pointer-events: none;
+  transition: letter-spacing 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease;
+}
+.footer-container:hover .kinetic-watermark {
+  letter-spacing: -0.01em;
+  opacity: 0.85;
+}
+
