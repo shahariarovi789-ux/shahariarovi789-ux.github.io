@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, ShieldCheck, Zap, Server, Cpu, Database } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ShieldCheck, Zap, Server, Cpu, Database, CheckCircle, Code2 } from "lucide-react";
 import { GithubIcon } from "@/components/ui/SocialIcons";
 import {
   FLYRANK_INTERNSHIP,
@@ -11,7 +11,7 @@ import { SITE } from "@/data/site";
 
 export const metadata = {
   title: `FlyRank AI Backend Engineering Case Study | ${SITE.name}`,
-  description: `Deep-dive case study of Shahariar Asfaq Ovi's backend AI engineering work at FlyRank AI — distributed rate limiting, Redis Lua token buckets, and Model Context Protocol (MCP) servers.`,
+  description: `Deep-dive case study of Shahariar Asfaq Ovi's backend AI engineering work at FlyRank AI — usage metering, micro-dollar pricing, Stripe webhook synchronization, and Pydantic v2 schemas.`,
 };
 
 export const dynamic = "force-static";
@@ -53,7 +53,30 @@ export default function FlyRankCaseStudyPage() {
             {FLYRANK_INTERNSHIP.summary}
           </p>
 
-          <h2 className="mt-10 font-heading text-xl font-bold text-white">Engineered Tech Stack</h2>
+          <div className="mt-6 flex flex-wrap items-center gap-4">
+            <a
+              href={FLYRANK_INTERNSHIP.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold font-mono transition-all shadow-lg shadow-blue-600/20"
+            >
+              <GithubIcon className="h-4 w-4" />
+              View Source Repository
+            </a>
+            {FLYRANK_INTERNSHIP.liveDemoUrl && (
+              <a
+                href={FLYRANK_INTERNSHIP.liveDemoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/5 hover:border-blue-500/40 text-slate-200 text-xs font-semibold font-mono transition-all"
+              >
+                Live Interactive Demo
+                <ArrowUpRight className="h-4 w-4 text-blue-400" />
+              </a>
+            )}
+          </div>
+
+          <h2 className="mt-10 font-heading text-xl font-bold text-white">Core Tech Stack</h2>
           <div className="mt-4 flex flex-wrap gap-2">
             {FLYRANK_INTERNSHIP.techStack.map((tech) => (
               <span
@@ -67,22 +90,22 @@ export default function FlyRankCaseStudyPage() {
         </div>
       </RevealOnScroll>
 
-      {/* Architectural Highlights Grid */}
+      {/* Architectural Focus Areas */}
       <div className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-5">
         <div className="rounded-2xl border border-white/10 bg-surface/80 p-5">
           <Server className="h-6 w-6 text-blue-400 mb-3" />
-          <p className="text-2xl font-bold font-heading text-white">99.9%</p>
-          <p className="text-xs font-mono text-muted mt-1">Production API Availability</p>
+          <p className="text-lg font-bold font-heading text-white">Micro-Dollar Engine</p>
+          <p className="text-xs font-mono text-muted mt-1">Exact integer arithmetic preventing floating-point rounding errors</p>
         </div>
         <div className="rounded-2xl border border-white/10 bg-surface/80 p-5">
           <Zap className="h-6 w-6 text-amber-400 mb-3" />
-          <p className="text-2xl font-bold font-heading text-white">&lt;85ms</p>
-          <p className="text-xs font-mono text-muted mt-1">p95 Latency SLA</p>
+          <p className="text-lg font-bold font-heading text-white">Idempotent Sync</p>
+          <p className="text-xs font-mono text-muted mt-1">Stripe webhook verification with guaranteed deduplication</p>
         </div>
         <div className="rounded-2xl border border-white/10 bg-surface/80 p-5">
           <Database className="h-6 w-6 text-emerald-400 mb-3" />
-          <p className="text-2xl font-bold font-heading text-white">10k+/min</p>
-          <p className="text-xs font-mono text-muted mt-1">Rate Limiter Throughput</p>
+          <p className="text-lg font-bold font-heading text-white">Pydantic v2 Loops</p>
+          <p className="text-xs font-mono text-muted mt-1">Automated LLM ticket triage schemas and repair loops</p>
         </div>
       </div>
 
@@ -93,7 +116,7 @@ export default function FlyRankCaseStudyPage() {
             02 — Key Engineering Milestones
           </p>
           <h2 className="mt-3 font-heading text-2xl font-bold sm:text-3xl text-white">
-            Architecture, Sprints &amp; Deliverables
+            Architecture, Deliverables &amp; Pipelines
           </h2>
         </div>
       </RevealOnScroll>
@@ -127,6 +150,27 @@ export default function FlyRankCaseStudyPage() {
             <p className="mt-5 text-sm sm:text-base leading-relaxed text-muted">
               {CAPSTONE_PROJECT.description}
             </p>
+
+            <div className="mt-6 flex flex-wrap gap-4">
+              <a
+                href={CAPSTONE_PROJECT.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-xs font-mono font-semibold text-blue-400 hover:text-blue-300"
+              >
+                GitHub Repository <ArrowUpRight className="h-4 w-4" />
+              </a>
+              {CAPSTONE_PROJECT.liveUrl && (
+                <a
+                  href={CAPSTONE_PROJECT.liveUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-xs font-mono font-semibold text-emerald-400 hover:text-emerald-300"
+                >
+                  Live Demo <ArrowUpRight className="h-4 w-4" />
+                </a>
+              )}
+            </div>
 
             <div className="mt-8 pt-6 border-t border-white/10">
               <p className="text-xs font-mono font-bold uppercase text-white mb-3">

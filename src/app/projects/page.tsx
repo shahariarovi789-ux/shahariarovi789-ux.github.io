@@ -7,7 +7,7 @@ import { SITE } from "@/data/site";
 
 export const metadata = {
   title: `Projects & Systems | ${SITE.name}`,
-  description: `Production distributed systems, Model Context Protocol (MCP) servers, rate-limiting microservices, and competitive programming solutions by ${SITE.name}.`,
+  description: `Production backend engines, adaptive AI tutoring systems, multi-agent CRAG pipelines, edge computer vision, and deep learning algorithms by ${SITE.name}.`,
 };
 
 export const dynamic = "force-static";
@@ -18,7 +18,7 @@ export default function ProjectsPage() {
       <SectionHeading
         eyebrow="Architected & Deployed"
         title={<>Systems &amp; <span className="text-gradient">Projects</span></>}
-        description="Production backend microservices, distributed rate-limiting engines, Model Context Protocol (MCP) agents, and competitive programming algorithms."
+        description="Production backend engines, adaptive AI tutoring systems, multi-agent CRAG pipelines, edge computer vision, and deep learning algorithms."
       />
 
       {/* Featured FlyRank AI Case Study Card */}
@@ -32,7 +32,7 @@ export default function ProjectsPage() {
           items={ASSIGNMENTS}
           caseStudyUrl="/projects/flyrank-backend-internship"
           githubUrl={FLYRANK_INTERNSHIP.githubUrl}
-          extraTag={{ emoji: "⚡", label: "Capstone Quota Microservice" }}
+          extraTag={{ emoji: "⚡", label: "Capstone Metering Engine" }}
         />
       </div>
 

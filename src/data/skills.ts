@@ -5,26 +5,46 @@ export interface SkillCategory {
 
 export const SKILL_CATEGORIES: SkillCategory[] = [
   {
-    category: "Backend & Distributed Systems",
-    items: ["FastAPI", "Python", "PostgreSQL", "Redis", "Celery", "Distributed Quotas", "Token Bucket Rate Limiting", "REST APIs", "AsyncIO", "Docker", "Microservices Architecture"]
+    category: "Languages",
+    items: ["C++", "Python", "SQL", "JavaScript", "Java", "PHP", "Bash"],
   },
   {
-    category: "AI, Agents & Tool Use",
-    items: ["Model Context Protocol (MCP)", "LangChain", "LlamaIndex", "Local LLMs (Ollama/vLLM)", "Hugging Face", "Agentic Workflows", "Vector DBs (Chroma/pgvector)", "Prompt Engineering", "Semantic RAG"]
+    category: "Backend & APIs",
+    items: ["FastAPI", "Flask", "RESTful APIs", "Asynchronous Python (asyncio)", "Uvicorn", "API Integration"],
   },
   {
-    category: "Competitive Programming & Core CS",
-    items: ["Data Structures & Algorithms", "C++", "Dynamic Programming", "Graph Theory", "Number Theory", "Time Complexity Optimization", "500+ CP Problems"]
+    category: "AI & LLM Systems",
+    items: [
+      "Model Context Protocol (MCP)",
+      "Claude API & Gemini API",
+      "Function / Tool Calling",
+      "Agentic AI (ReAct)",
+      "RAG & Vector Search",
+      "PEFT / LoRA Fine-Tuning",
+      "Quantization (4-bit NF4)",
+      "Prompt Engineering",
+    ],
   },
   {
-    category: "Data, Scraping & DevOps",
-    items: ["Playwright", "Puppeteer", "Proxy Mesh Architecture", "SQL / Schema Design", "Git & GitHub", "GitHub Actions CI/CD", "Linux / Bash", "Postman"]
-  }
+    category: "Data, Vision & Annotation",
+    items: [
+      "Bounding Box Annotation",
+      "PDF Layout Analysis",
+      "Dataset Curation & RLHF",
+      "Computer Vision (MediaPipe)",
+      "WebAssembly",
+      "PyTorch & NumPy",
+    ],
+  },
+  {
+    category: "Databases & Tools",
+    items: ["MySQL", "SQLite", "PostgreSQL", "Git & GitHub Actions", "Docker", "Postman", "Linux / Bash", "Jupyter Notebook", "LaTeX"],
+  },
 ];
 
 export const SKILLS = [
-  "FastAPI", "Python", "C++", "Model Context Protocol (MCP)", "PostgreSQL", "Redis",
-  "Celery", "Distributed Rate Limiting", "Local LLMs", "LangChain", "Docker",
-  "Proxy Mesh Scraping", "AsyncIO", "REST APIs", "ChromaDB", "Vector Search",
-  "Git & GitHub Actions", "Linux / Bash", "Algorithms & DSA", "ICPC Regionalist", "SQL Optimization"
+  "FastAPI", "Python", "C++", "Model Context Protocol (MCP)", "LLMs", "RAG & Vector Search",
+  "PEFT / LoRA", "Agentic AI", "Bounding Box Annotation", "PDF Layout Analysis",
+  "PostgreSQL", "MySQL", "SQLite", "Docker", "Git & GitHub Actions",
+  "MediaPipe", "WebAssembly", "NumPy & PyTorch", "REST APIs", "ICPC Regionalist"
 ];

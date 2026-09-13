@@ -5,8 +5,8 @@ export interface StatItem {
 }
 
 export const STATS: StatItem[] = [
-  { label: "ICPC Dhaka Regionalist", value: "2×", subtext: "2023 & 2024 Finalist" },
-  { label: "Verified Credentials", value: "15+", subtext: "NASA, Hugging Face, Anthropic" },
-  { label: "DSA & CP Problems Solved", value: "500+", subtext: "Codeforces & LeetCode" },
-  { label: "Backend Production Uptime", value: "99.9%", subtext: "FlyRank AI Systems" },
+  { label: "ICPC Dhaka Regionalist", value: "2×", subtext: "2023 & 2024 Contestant" },
+  { label: "Verified Credentials", value: "25+", subtext: "Anthropic, FlyRank, Hugging Face, NASA" },
+  { label: "Annotated Documents", value: "1,000+", subtext: "Spatial Bounding-Box Labeling" },
+  { label: "LLM Prompts Evaluated", value: "10,000+", subtext: "Model Alignment & Validation" },
 ];

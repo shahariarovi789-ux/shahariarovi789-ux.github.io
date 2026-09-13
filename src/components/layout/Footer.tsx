@@ -5,7 +5,7 @@ import Link from "next/link";
 import { SITE } from "@/data/site";
 import FooterMeshCanvas from "@/components/background/FooterMeshCanvas";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/SocialIcons";
-import { ArrowUp, Copy, Check, FileText } from "lucide-react";
+import { ArrowUp, Copy, FileText } from "lucide-react";
 
 export default function Footer() {
   const [dhakaTime, setDhakaTime] = useState("");
@@ -51,7 +51,7 @@ export default function Footer() {
               <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
             </Link>
             <p className="mt-1 text-xs uppercase tracking-widest text-muted font-mono">
-              Backend AI Systems · Distributed Quotas · Model Context Protocol (MCP)
+              Backend AI Systems · Model Context Protocol (MCP) · Competitive Programming
             </p>
           </div>
 
@@ -74,7 +74,7 @@ export default function Footer() {
           <div>
             <h4 className="text-blue-400 uppercase tracking-widest font-semibold mb-4 flex items-center gap-2">
               <span>Directory Index</span>
-              <span className="text-[10px] opacity-60">[01-05]</span>
+              <span className="text-[10px] opacity-60">[01-06]</span>
             </h4>
             <ul className="space-y-2.5 uppercase tracking-wider text-muted">
               {[
@@ -143,20 +143,20 @@ export default function Footer() {
             </h4>
             <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-3 backdrop-blur-md">
               <div className="flex items-center justify-between text-[11px]">
-                <span className="text-muted">Primary Runtime:</span>
-                <span className="text-white font-medium">FastAPI · Python 3.12</span>
+                <span className="text-muted">Primary Stack:</span>
+                <span className="text-white font-medium">FastAPI · Python · C++</span>
               </div>
               <div className="flex items-center justify-between text-[11px]">
-                <span className="text-muted">AI Protocol:</span>
-                <span className="text-blue-400 font-medium">Model Context Protocol</span>
+                <span className="text-muted">AI Systems:</span>
+                <span className="text-blue-400 font-medium">MCP · PEFT/LoRA · LLMs</span>
               </div>
               <div className="flex items-center justify-between text-[11px]">
                 <span className="text-muted">Competitive Coding:</span>
                 <span className="text-emerald-400 font-medium">2× ICPC Regionalist</span>
               </div>
               <div className="flex items-center justify-between text-[11px]">
-                <span className="text-muted">Database Engine:</span>
-                <span className="text-white font-medium">PostgreSQL 16 + Redis</span>
+                <span className="text-muted">Databases:</span>
+                <span className="text-white font-medium">PostgreSQL · MySQL · SQLite</span>
               </div>
             </div>
           </div>

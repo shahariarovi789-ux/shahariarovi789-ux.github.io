@@ -14,7 +14,7 @@ export default function ProjectsPreview() {
           <SectionHeading
             eyebrow="Selected Engineering Work"
             title={<>Featured <span className="text-gradient">Projects &amp; Systems</span></>}
-            description="Distributed rate limiters, Model Context Protocol (MCP) agents, and web scraping architectures."
+            description="FastAPI usage metering engines, adaptive DeepSeek-7B tutoring systems, multi-agent CRAG pipelines, and edge computer vision."
           />
           <Link
             href="/projects"

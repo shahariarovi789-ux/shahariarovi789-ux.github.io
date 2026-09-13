@@ -11,15 +11,15 @@ import HeroGlow from "./HeroGlow";
 import HeroPortraitFX from "./HeroPortraitFX";
 
 const ROLES = [
-  "Backend AI Engineer",
-  "2× ICPC Regionalist",
-  "Distributed Systems Developer",
-  "Model Context Protocol (MCP) Specialist",
+  "Backend AI Systems",
+  "Model Context Protocol (MCP)",
+  "Large Language Models",
+  "Competitive Programming",
 ];
 
 const CURRENT_ROLES = [
   "Backend AI Engineer Intern @ FlyRank AI",
-  "2× ICPC Dhaka Regional Finalist (2023, 2024)",
+  "2× ICPC Dhaka Regionalist (2023, 2024)",
 ];
 
 export default function Hero() {
@@ -90,8 +90,7 @@ export default function Hero() {
           </div>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-            CSE student at ULAB &amp; Backend AI Engineer Intern at FlyRank AI building
-            resilient distributed backends, Redis token-bucket rate limiters, Model Context Protocol (MCP) tool servers, and high-concurrency web scraping pipelines.
+            CSE undergrad at ULAB, AI enthusiast &amp; 2× ICPC Dhaka Regionalist — building backend AI systems with Python, FastAPI, LLMs, and Model Context Protocol (MCP).
           </p>
 
           {/* Current roles banner */}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Expand, BadgeCheck, FileText, Download, Filter } from "lucide-react";
+import { Expand, BadgeCheck, FileText, ExternalLink, Award } from "lucide-react";
 import { CERTIFICATES, Certificate } from "@/data/certificates";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import CertificateModal from "./CertificateModal";
@@ -60,22 +60,29 @@ export default function CertificateGrid() {
               className="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-surface/70 text-left shadow-lg shadow-black/30 transition-all duration-300 hover:border-blue-500/40 hover:shadow-[0_15px_35px_rgba(0,0,0,0.6),0_0_20px_rgba(59,130,246,0.15)]"
             >
               {/* Thumbnail Container */}
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/60">
-                <Image
-                  src={cert.thumbnail}
-                  alt={cert.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  loading={index < 6 ? "eager" : "lazy"}
-                />
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/60 flex items-center justify-center">
+                {cert.thumbnail ? (
+                  <Image
+                    src={cert.thumbnail}
+                    alt={cert.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    loading={index < 6 ? "eager" : "lazy"}
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center p-6 text-center">
+                    <Award className="h-12 w-12 text-blue-400 mb-2 opacity-80" />
+                    <span className="text-xs font-mono text-muted">{cert.issuer}</span>
+                  </div>
+                )}
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-90" />
 
                 {/* Hover Action Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-black/40 backdrop-blur-xs">
                   <span className="flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white shadow-lg">
-                    <Expand className="h-3.5 w-3.5" /> View Certificate
+                    <Expand className="h-3.5 w-3.5" /> View Credential
                   </span>
                 </div>
 
@@ -85,7 +92,15 @@ export default function CertificateGrid() {
                 </span>
 
                 <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/60 border border-white/15 px-2.5 py-1 text-[10px] font-mono text-white/80 backdrop-blur-md">
-                  <FileText className="h-3 w-3" /> PDF
+                  {cert.format === "pdf" ? (
+                    <>
+                      <FileText className="h-3 w-3" /> PDF
+                    </>
+                  ) : (
+                    <>
+                      <ExternalLink className="h-3 w-3" /> Course
+                    </>
+                  )}
                 </span>
               </div>
 

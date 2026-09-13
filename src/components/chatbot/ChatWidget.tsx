@@ -2,48 +2,52 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Loader2, Sparkles, Bot } from "lucide-react";
+import { MessageCircle, X, Send, Loader2, Sparkles } from "lucide-react";
 import ChatMessage, { Message } from "./ChatMessage";
 import { SITE } from "@/data/site";
 import { FLYRANK_INTERNSHIP } from "@/data/flyrank-internship";
 import { PROJECTS } from "@/data/projects";
-import { EXPERIENCE } from "@/data/experience";
 
 const SUGGESTIONS = [
   "What are his core skills?",
-  "Tell me about the FlyRank internship",
-  "What is his ICPC / CP background?",
-  "How can I contact Shahariar?",
+  "Tell me about his FlyRank internship",
+  "What is his ICPC background?",
+  "What projects has he built?",
 ];
 
 function generateLocalAnswer(query: string): string {
   const q = query.toLowerCase();
 
-  if (q.includes("flyrank") || q.includes("internship")) {
-    return `${SITE.name} is a Backend AI Engineer Intern at ${FLYRANK_INTERNSHIP.company}. He architected multi-tenant rate-limiting microservices with Redis Lua scripts, Celery & Playwright scraping pipelines with proxy rotators, and custom Model Context Protocol (MCP) server endpoints with sub-85ms latency and 99.9% uptime.`;
+  if (q.includes("flyrank") || q.includes("internship") || q.includes("capstone")) {
+    return `${SITE.name} is a Backend AI Engineer Intern at ${FLYRANK_INTERNSHIP.company}. He architected an enterprise usage metering and quota enforcement engine using FastAPI & PostgreSQL with exact integer micro-dollar pricing, guaranteed exactly-once Stripe webhook synchronization, and automated LLM ticket triage with Pydantic v2 schemas.`;
   }
 
   if (q.includes("skill") || q.includes("stack") || q.includes("tech")) {
-    return `${SITE.name}'s core engineering stack includes FastAPI, Python, Redis, PostgreSQL, Model Context Protocol (MCP), Celery, Docker, AsyncIO, and C++ for competitive programming. He specializes in scalable distributed backend architectures and agentic AI tooling.`;
+    return `${SITE.name}'s core engineering stack includes Python, FastAPI, C++, Model Context Protocol (MCP), LLMs, PEFT/LoRA fine-tuning, PostgreSQL, MySQL, SQLite, Docker, and Git/GitHub Actions. He has extensive hands-on experience in backend AI architectures, bounding-box PDF layout annotation, and competitive programming.`;
   }
 
   if (q.includes("icpc") || q.includes("competitive") || q.includes("algorithm") || q.includes("cp") || q.includes("codeforces") || q.includes("leetcode")) {
-    return `${SITE.name} is a 2× ICPC Dhaka Regionalist (2023 & 2024) and has solved 500+ algorithmic problems across Codeforces and LeetCode, with deep mastery in Graph Theory, Dynamic Programming, and Data Structure optimization.`;
+    return `${SITE.name} is a 2× ICPC Dhaka Regionalist (2023 & 2024) and has spent years solving algorithmic problems in C++, focusing on Graph Theory, Dynamic Programming, and algorithmic optimization. He also served as the Organizing Secretary of the ULAB Computer Programming Club.`;
   }
 
   if (q.includes("project") || q.includes("built") || q.includes("work")) {
-    return `${SITE.name} has built production systems including the FlyRank AI Backend Infrastructure, a Distributed Rate-Limiting & Quota Engine (FastAPI/Redis), an MCP Autonomous Research Agent, an Enterprise Scraping Mesh with Playwright, and a Neural Sentiment Analyzer. Check the /projects page for full case studies!`;
+    const list = PROJECTS.map((p) => p.title).join(", ");
+    return `${SITE.name} has built real projects including: ${list}. Check out the /projects page for code repositories and live interactive demonstrations!`;
+  }
+
+  if (q.includes("roar") || q.includes("deepseek") || q.includes("tutor")) {
+    return `ROAR is Shahariar's final-year university capstone project at ULAB. It is an intelligent prompt engineering tutor powered by a quantized local DeepSeek-7B model fine-tuned with PEFT/LoRA adapters, coupled with a custom SQLite learning state machine and hybrid rule+LLM evaluation loop.`;
   }
 
   if (q.includes("cert") || q.includes("credential") || q.includes("hugging") || q.includes("nasa") || q.includes("anthropic")) {
-    return `${SITE.name} holds 15 verified credentials including Hugging Face's Fundamentals of Agents, NASA Open Science 101, and multiple Anthropic Academy certifications in Model Context Protocol (MCP), Claude API, and AI Fluency.`;
+    return `${SITE.name} holds 18 certifications including Anthropic Academy (Building with Claude API, Model Context Protocol, Claude Code), NASA Open Science 101, Hugging Face Foundations of Agentic AI, and DeepLearning.AI / Coursera machine learning courses. Verified PDFs and credentials can be inspected on the /certificates page.`;
   }
 
-  if (q.includes("contact") || q.includes("email") || q.includes("hire") || q.includes("reach") || q.includes("linkedin")) {
-    return `You can reach ${SITE.name} directly via email at ${SITE.email} or connect on LinkedIn at ${SITE.linkedinUrl}. He is currently open to Backend AI Engineering roles, distributed systems internships, and high-throughput backend collaborations!`;
+  if (q.includes("contact") || q.includes("email") || q.includes("hire") || q.includes("reach") || q.includes("phone") || q.includes("whatsapp") || q.includes("linkedin")) {
+    return `You can reach ${SITE.name} directly via email at ${SITE.email} or by phone/WhatsApp at ${SITE.phone}. You can also connect on LinkedIn at ${SITE.linkedinUrl} or explore his open-source code on GitHub at ${SITE.githubUrl}.`;
   }
 
-  return `${SITE.name} is a Backend AI Systems & Algorithms Engineer, 2× ICPC Dhaka Regionalist, and Backend AI Engineer Intern at FlyRank AI specializing in FastAPI, Redis, MCP, and PostgreSQL. Feel free to explore his projects or reach out directly at ${SITE.email}!`;
+  return `${SITE.name} is a Computer Science & Engineering undergrad at ULAB, 2× ICPC Dhaka Regionalist, and Backend AI Engineer Intern at FlyRank AI specializing in Python, FastAPI, Model Context Protocol (MCP), and LLMs. Feel free to explore his projects or reach out directly at ${SITE.email}!`;
 }
 
 export default function ChatWidget() {
@@ -51,7 +55,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: `Hi! I'm ${SITE.shortName}'s portfolio AI assistant. Ask me anything about his backend engineering experience, ICPC achievements, FlyRank internship, or core skills.`
+      content: `Hi! I'm ${SITE.shortName}'s portfolio AI assistant. Ask me anything about his backend AI engineering experience, ICPC achievements, FlyRank capstone, or projects.`
     },
   ]);
   const [input, setInput] = useState("");
@@ -117,7 +121,7 @@ export default function ChatWidget() {
                   AI Recruiter Assistant
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 </p>
-                <p className="text-[11px] font-mono text-muted">Grounded in Shahariar&apos;s background</p>
+                <p className="text-[11px] font-mono text-muted">Grounded in verified experience</p>
               </div>
             </div>
 

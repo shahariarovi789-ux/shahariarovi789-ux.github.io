@@ -8,72 +8,77 @@ export interface Assignment {
 
 export const FLYRANK_INTERNSHIP = {
   company: "FlyRank AI",
-  role: "Backend AI Engineering Internship",
-  duration: "July 2026 – September 2026",
-  track: "Backend & Agentic Systems Track",
+  role: "Backend AI Engineer — Intern",
+  duration: "Jun 2026 — Sep 2026 (Completed)",
+  track: "Backend AI Systems & Quota Engineering",
   summary:
-    "Architected and deployed high-performance distributed backend microservices, Redis-based multi-tenant quota engines, and Model Context Protocol (MCP) servers powering enterprise AI scraping agents.",
+    "Architected an enterprise usage metering and quota enforcement engine using FastAPI & PostgreSQL with micro-dollar pricing, exactly-once idempotency, and Stripe webhook synchronization. Developed automated LLM ticket triage services with Pydantic v2 schemas and retry repair loops. Awarded official Certificate of Completion.",
   techStack: [
     "FastAPI",
+    "PostgreSQL",
+    "Stripe",
+    "Docker",
     "Python",
-    "Redis",
-    "Model Context Protocol (MCP)",
-    "PostgreSQL 16",
-    "Celery",
-    "Playwright",
-    "Docker Compose"
+    "Pydantic v2",
+    "GitHub Actions CI",
+    "Pytest"
   ],
-  githubUrl: "https://github.com/shahariarovi789-ux",
+  githubUrl: "https://github.com/shahariarovi789-ux/flyrank-capstone-metering-billing",
+  liveDemoUrl: "https://shahariarovi789-ux.github.io/flyrank-capstone-metering-billing/",
+  certificateUrl: "/certificates/flyrank-backend-ai-engineering.pdf",
 };
 
 export const ASSIGNMENTS: Assignment[] = [
   {
     number: "01",
-    title: "Multi-Tenant Quota & Token-Bucket Architecture",
-    tagline: "Atomic distributed rate-limiting at scale",
+    title: "Usage Metering & Micro-Dollar Pricing Engine",
+    tagline: "Exact integer micro-dollar calculation",
     description:
-      "Designed and implemented distributed token-bucket rate limiters in Redis Lua scripts to eliminate race conditions, managing tiered API quotas across multiple agent tenants.",
-    tags: ["Redis", "Lua Scripts", "Distributed Systems", "FastAPI"],
+      "Designed and implemented high-precision multi-tenant usage metering with exact integer micro-dollar arithmetic to eliminate floating-point rounding errors across API token consumption.",
+    tags: ["FastAPI", "Python", "Pydantic v2", "Micro-Dollar Pricing"],
   },
   {
     number: "02",
-    title: "Asynchronous Scraping Mesh & Proxy Rotator",
-    tagline: "Resilient headless browser extraction",
+    title: "Stripe Webhook Sync & Idempotent Deduplication",
+    tagline: "Exactly-once event processing",
     description:
-      "Engineered a distributed Celery and Playwright scraping mesh with dynamic proxy pool rotation, automated backoff retry policies, and fingerprint masking with >99.8% success rates.",
-    tags: ["Playwright", "Celery", "PostgreSQL", "Proxy Rotation"],
+      "Engineered a resilient Stripe webhook processing pipeline featuring cryptographic signature verification, database transaction isolation, and guaranteed exactly-once idempotency keys.",
+    tags: ["Stripe", "Webhooks", "PostgreSQL", "Idempotency"],
   },
   {
     number: "03",
-    title: "Model Context Protocol (MCP) Server Integration",
-    tagline: "Standardized agent-to-backend tooling",
+    title: "Automated LLM Ticket Triage & Schema Validation",
+    tagline: "Structured AI outputs with repair loops",
     description:
-      "Built custom Model Context Protocol (MCP) servers allowing autonomous AI agents to query live database metrics, invoke extraction tools, and execute verified database queries safely.",
-    tags: ["MCP", "LLM Tooling", "Anthropic Spec", "Python"],
+      "Developed automated LLM ticket triage services using strict Pydantic v2 validation schemas and automated retry repair loops to handle edge-case schema deviations gracefully.",
+    tags: ["Pydantic v2", "LLMs", "Schema Validation", "Retry Loops"],
   },
   {
     number: "04",
-    title: "Database Indexing & Latency Hardening",
-    tagline: "Sub-85ms p95 API response optimization",
+    title: "Automated CI/CD Pipeline & Test Suite",
+    tagline: "Containerized testing & deployment",
     description:
-      "Analyzed SQL query plans, added composite B-tree and GiST indices in PostgreSQL 16, and implemented Redis caching layers to reduce database load by 45%.",
-    tags: ["PostgreSQL 16", "Query Optimization", "Caching", "Redis"],
+      "Configured automated GitHub Actions workflows running complete Pytest test suites across metering, quota enforcement, and webhook synchronization workflows.",
+    tags: ["GitHub Actions", "Docker", "Pytest", "CI/CD"],
   },
 ];
 
 export const CAPSTONE_PROJECT = {
-  title: "Distributed Rate-Limiting & Real-Time AI Agent Engine",
-  tagline: "Production-grade backend infrastructure for AI agent swarms",
+  title: "Usage Metering & Billing Engine — FlyRank Capstone",
+  tagline: "Mission-critical metering, subscription quotas, and Stripe webhook sync",
   description:
-    "Shipped a resilient, production-grade microservice that manages dynamic API token allocations, coordinates headless agent workers across Docker clusters, and provides real-time telemetry through MCP endpoints with 99.9% uptime and sub-85ms latency.",
+    "A production-ready usage metering, subscription quota enforcement, AI token pricing, and Stripe webhook synchronization engine. Built with exact integer micro-dollar pricing, guaranteed exactly-once idempotency deduplication, and automated GitHub Actions CI test suites.",
   techStack: [
     "FastAPI",
-    "Redis Clusters",
-    "PostgreSQL 16",
-    "Model Context Protocol (MCP)",
-    "Docker Compose",
-    "Celery",
-    "Prometheus / Grafana"
+    "PostgreSQL",
+    "Stripe",
+    "Docker",
+    "Python",
+    "Pydantic v2",
+    "Pytest",
+    "GitHub Actions"
   ],
-  status: "Completed & Deployed",
+  githubUrl: "https://github.com/shahariarovi789-ux/flyrank-capstone-metering-billing",
+  liveUrl: "https://shahariarovi789-ux.github.io/flyrank-capstone-metering-billing/",
+  status: "Completed & Verified",
 };

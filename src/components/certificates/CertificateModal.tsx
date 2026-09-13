@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, BadgeCheck, Download, Calendar, Building, Sparkles } from "lucide-react";
+import { X, ExternalLink, BadgeCheck, Download, Calendar, Building, Award } from "lucide-react";
 import { Certificate } from "@/data/certificates";
 
 export default function CertificateModal({
@@ -62,15 +62,23 @@ export default function CertificateModal({
 
             {/* Certificate Preview */}
             <div className="relative flex-1 overflow-y-auto p-6">
-              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-xl border border-white/10 bg-black/50 shadow-inner">
-                <Image
-                  src={certificate.thumbnail}
-                  alt={certificate.title}
-                  fill
-                  className="object-contain p-2"
-                  sizes="(max-width: 768px) 100vw, 750px"
-                  priority
-                />
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-xl border border-white/10 bg-black/50 shadow-inner flex items-center justify-center">
+                {certificate.thumbnail ? (
+                  <Image
+                    src={certificate.thumbnail}
+                    alt={certificate.title}
+                    fill
+                    className="object-contain p-2"
+                    sizes="(max-width: 768px) 100vw, 750px"
+                    priority
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center p-8 text-center">
+                    <Award className="h-16 w-16 text-blue-400 mb-3 opacity-90" />
+                    <p className="font-heading text-xl font-bold text-white">{certificate.title}</p>
+                    <p className="text-sm font-mono text-muted mt-1">{certificate.issuer}</p>
+                  </div>
+                )}
               </div>
 
               <div className="mt-6">
@@ -94,14 +102,18 @@ export default function CertificateModal({
 
             {/* Footer Actions */}
             <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 bg-surface/80 px-6 py-4">
-              <a
-                href={certificate.file}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white transition-all hover:bg-white/10"
-              >
-                <Download className="h-3.5 w-3.5" /> Download Full PDF
-              </a>
+              {certificate.file ? (
+                <a
+                  href={certificate.file}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white transition-all hover:bg-white/10"
+                >
+                  <Download className="h-3.5 w-3.5" /> Download Full PDF
+                </a>
+              ) : (
+                <span className="text-xs font-mono text-muted">Verified Online Course</span>
+              )}
 
               {certificate.verifyUrl && (
                 <a
