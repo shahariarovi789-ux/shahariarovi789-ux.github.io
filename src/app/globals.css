@@ -50,6 +50,28 @@ body {
   color: #ffffff;
 }
 
+/* ---- custom cursor ---- */
+@media (hover: hover) and (pointer: fine) {
+  * { cursor: none !important; }
+}
+.cursor-dot, .cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 9999;
+  pointer-events: none; border-radius: 9999px;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+.cursor-dot  { width: 7px; height: 7px; background: var(--accent); }
+.cursor-ring {
+  width: 34px; height: 34px; border: 1px solid var(--accent);
+  transition: width .25s ease, height .25s ease, opacity .25s ease, background .25s ease;
+  opacity: .7;
+}
+.cursor-ring.hovering { width: 56px; height: 56px; background: rgba(59,130,246,.15); opacity: 1; }
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-dot, .cursor-ring { display: none !important; }
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

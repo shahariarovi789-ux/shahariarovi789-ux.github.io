@@ -8,7 +8,7 @@ export default function ProjectsPreview() {
   const featured = PROJECTS.filter((p) => p.featured).slice(0, 3);
 
   return (
-    <section className="px-6 py-20 md:px-12 lg:px-20 border-b border-white/10 bg-surface/30">
+    <section className="px-6 py-20 md:px-12 lg:px-20 border-b border-white/10 bg-transparent">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeading

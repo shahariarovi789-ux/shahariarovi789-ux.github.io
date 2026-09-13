@@ -3,7 +3,7 @@ import { STATS } from "@/data/stats";
 
 export default function StatsStrip() {
   return (
-    <section className="border-y border-white/10 bg-surface/60 px-6 py-10 md:px-12 lg:px-20 backdrop-blur-sm">
+    <section className="border-y border-white/10 bg-surface/30 px-6 py-10 md:px-12 lg:px-20 backdrop-blur-sm">
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 sm:grid-cols-4">
         {STATS.map((s, i) => (
           <RevealOnScroll key={s.label} delay={i * 0.08} className="text-center">

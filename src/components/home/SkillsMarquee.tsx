@@ -5,7 +5,7 @@ export default function SkillsMarquee() {
   const row2 = SKILLS.slice(Math.ceil(SKILLS.length / 2));
 
   return (
-    <section className="py-20 overflow-hidden border-b border-white/10 bg-black/40">
+    <section className="py-20 overflow-hidden border-b border-white/10 bg-transparent">
       <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-20 mb-8 text-center">
         <span className="text-xs uppercase tracking-widest font-mono text-blue-400">
           Core Technical Capabilities

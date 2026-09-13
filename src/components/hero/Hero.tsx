@@ -54,7 +54,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative flex min-h-screen w-full items-center overflow-hidden bg-black px-6 pt-32 pb-20 md:px-12 lg:px-20">
+    <section className="relative flex min-h-screen w-full items-center overflow-hidden bg-transparent px-6 pt-32 pb-20 md:px-12 lg:px-20">
       <HeroGlow />
 
       <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-16 lg:grid-cols-[1.15fr_0.85fr]">

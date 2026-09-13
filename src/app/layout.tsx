@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import ChatWidget from "@/components/chatbot/ChatWidget";
 import NeuralField from "@/components/background/NeuralField";
+import CustomCursor from "@/components/layout/CustomCursor";
 import { SITE } from "@/data/site";
 
 const spaceGrotesk = Space_Grotesk({
@@ -49,12 +50,15 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} ${inter.variable} font-body bg-black text-foreground antialiased selection:bg-blue-600 selection:text-white relative min-h-screen`}
       >
         <NeuralField />
+        <CustomCursor />
         <div className="grain" />
-        <Navbar />
-        <div className="pb-20 md:pb-0">{children}</div>
-        <Footer />
-        <ChatWidget />
-        <MobileBottomNav />
+        <div className="relative z-10 flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-1 pb-20 md:pb-0">{children}</main>
+          <Footer />
+          <ChatWidget />
+          <MobileBottomNav />
+        </div>
       </body>
     </html>
   );

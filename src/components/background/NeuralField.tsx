@@ -85,13 +85,13 @@ export default function NeuralField() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       parseAccent();
-      const count = mobile ? 26 : Math.min(80, Math.floor((w * h) / 16000));
+      const count = mobile ? 30 : Math.min(90, Math.floor((w * h) / 14000));
       nodes = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
-        vx: (Math.random() - 0.5) * (mobile ? 0.14 : 0.22),
-        vy: (Math.random() - 0.5) * (mobile ? 0.14 : 0.22),
-        r: Math.random() * 1.3 + 0.7,
+        vx: (Math.random() - 0.5) * (mobile ? 0.16 : 0.24),
+        vy: (Math.random() - 0.5) * (mobile ? 0.16 : 0.24),
+        r: Math.random() * 1.4 + 0.8,
         glow: 0,
       }));
     }
@@ -178,7 +178,7 @@ export default function NeuralField() {
             const t = 1 - Math.sqrt(d2) / LINK;
             const lit = Math.max(a.glow, bn.glow);
             const c = lit > 0.05 ? currentAccent : warm;
-            ctx.strokeStyle = `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${t * (0.16 + lit * 0.55)})`;
+            ctx.strokeStyle = `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${t * (0.18 + lit * 0.55)})`;
             ctx.lineWidth = 0.55 + lit * 0.7;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
@@ -200,7 +200,7 @@ export default function NeuralField() {
           : warm;
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r + glowVal * 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${c[0] | 0}, ${c[1] | 0}, ${c[2] | 0}, ${0.55 + glowVal * 0.45})`;
+        ctx.fillStyle = `rgba(${c[0] | 0}, ${c[1] | 0}, ${c[2] | 0}, ${0.6 + glowVal * 0.4})`;
         ctx.fill();
 
         if (glowVal > 0.15) {
@@ -262,7 +262,7 @@ export default function NeuralField() {
   return (
     <canvas
       ref={ref}
-      className="fixed inset-0 -z-10 h-full w-full pointer-events-none"
+      className="fixed inset-0 z-0 h-full w-full pointer-events-none"
       style={{ background: "radial-gradient(120% 120% at 50% 0%, #08101e 0%, #000000 65%)" }}
       aria-hidden="true"
     />
