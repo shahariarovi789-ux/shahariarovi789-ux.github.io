@@ -112,4 +112,60 @@ export const PROJECTS: Project[] = [
     githubUrl: "https://github.com/shahariarovi789-ux/hospital-management-system",
     featured: true,
   },
+  {
+    id: "ai-job-search",
+    title: "AI Job Search — Agentic Application Framework",
+    description:
+      "A local AI-powered job application framework built on Claude Code that runs entirely on your machine. Evaluates job postings against your profile, tailors CVs for each role, drafts cover letters, and prepares interview answers — with zero data sent to third-party services.",
+    bullets: [
+      "Built an agentic pipeline using Claude Code to evaluate job descriptions and score role–candidate fit automatically.",
+      "Automated CV tailoring and cover letter generation with prompt chaining and structured output parsing.",
+      "Designed for full local execution — no external API data sharing, fork-and-own architecture."
+    ],
+    tech: ["Claude Code", "Python", "AI Agents", "Prompt Engineering"],
+    githubUrl: "https://github.com/shahariarovi789-ux/ai-job-search",
+    featured: false,
+  },
+  {
+    id: "markitdown-ui",
+    title: "MarkItDown UI — File-to-Markdown Web Interface",
+    description:
+      "A professional, cyberpunk-themed web interface for Microsoft's MarkItDown library that converts PDF, Word, Excel, PowerPoint, images, audio files, and HTML into clean Markdown in one click. Supports MCP (Model Context Protocol) integration for use inside AI agent workflows.",
+    bullets: [
+      "Wrapped Microsoft's MarkItDown Python library in a responsive HTML/CSS/JS front-end with drag-and-drop file upload.",
+      "Supported 7 file formats (PDF, DOCX, XLSX, PPTX, images, audio, HTML) with instant client-preview output.",
+      "Added MCP (Model Context Protocol) tool integration for AI agent pipelines consuming converted Markdown."
+    ],
+    tech: ["HTML", "Python", "MarkItDown", "MCP", "UI/UX"],
+    githubUrl: "https://github.com/shahariarovi789-ux/markitdown-ui",
+    featured: false,
+  },
+  {
+    id: "llm-triage-api",
+    title: "LLM Triage API",
+    description:
+      "A lightweight Python REST API that routes incoming text payloads to the appropriate LLM handler based on content classification. Designed as a modular triage layer for multi-model agent systems where different models handle different task types.",
+    bullets: [
+      "Built a classification-driven routing layer to dispatch requests to specialist LLM endpoints based on payload content.",
+      "Designed a modular handler architecture allowing hot-swapping of model backends without API contract changes.",
+      "Implemented structured JSON response schemas for downstream agent and RAG pipeline consumption."
+    ],
+    tech: ["Python", "FastAPI", "LLM Routing", "REST API"],
+    githubUrl: "https://github.com/shahariarovi789-ux/llm-triage-api",
+    featured: false,
+  },
+  {
+    id: "the-polite-scraper",
+    title: "The Polite Scraper",
+    description:
+      "An ethical, robots.txt-respecting Python web scraper with built-in rate limiting, retry logic, and configurable crawl delays. Built for AI data collection workflows where responsible crawling and data quality matter as much as speed.",
+    bullets: [
+      "Implemented automatic robots.txt parsing and respect, with configurable per-domain crawl delay enforcement.",
+      "Built exponential-backoff retry logic and polite rate limiting to avoid server overload during bulk data collection.",
+      "Designed clean output pipelines (JSON/CSV) for direct ingestion into LLM fine-tuning and RAG dataset workflows."
+    ],
+    tech: ["Python", "Web Scraping", "Data Collection", "AI/ML"],
+    githubUrl: "https://github.com/shahariarovi789-ux/the-polite-scraper",
+    featured: false,
+  },
 ];

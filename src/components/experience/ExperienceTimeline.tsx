@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Briefcase, Trophy, Users, GraduationCap, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { EXPERIENCE, ExperienceType } from "@/data/experience";
@@ -23,16 +24,27 @@ const TYPE_LABEL: Record<ExperienceType, string> = {
 export default function ExperienceTimeline() {
   return (
     <div className="relative mx-auto mt-16 max-w-4xl">
-      {/* Vertical line */}
-      <div className="absolute left-[27px] top-2 bottom-2 w-px bg-gradient-to-b from-blue-500/60 via-white/10 to-transparent" />
+      {/* Animated vertical line */}
+      <motion.div
+        initial={{ scaleY: 0 }}
+        whileInView={{ scaleY: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        style={{ originY: 0 }}
+        className="absolute left-[27px] top-2 bottom-2 w-px bg-gradient-to-b from-blue-500/60 via-white/10 to-transparent"
+      />
 
       <div className="flex flex-col gap-10">
         {EXPERIENCE.map((item, index) => {
           const Icon = ICONS[item.type];
           return (
             <RevealOnScroll key={item.id} delay={index * 0.08} className="relative pl-[68px]">
-              {/* Icon node */}
-              <div
+              {/* Animated icon node */}
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.08 + 0.15, type: "spring", stiffness: 260, damping: 20 }}
                 className={cn(
                   "absolute left-0 top-0 flex h-14 w-14 items-center justify-center rounded-2xl border backdrop-blur-md transition-colors",
                   item.current
@@ -41,7 +53,11 @@ export default function ExperienceTimeline() {
                 )}
               >
                 <Icon className={cn("h-6 w-6", item.current ? "text-blue-400" : "text-muted")} />
-              </div>
+                {item.current && (
+                  <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-blue-500 ring-2 ring-black animate-ping opacity-75" />
+                )}
+              </motion.div>
+
 
               {/* Card */}
               <div className="group rounded-2xl border border-white/10 bg-surface/80 p-6 sm:p-8 transition-all duration-300 hover:border-blue-500/40 hover:bg-surface hover:shadow-[0_10px_30px_rgba(0,0,0,0.5),0_0_20px_rgba(59,130,246,0.12)]">

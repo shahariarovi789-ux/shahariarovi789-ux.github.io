@@ -153,53 +153,56 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           className="relative flex justify-center lg:justify-end"
         >
-          <div
-            ref={imageRef}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            className="relative"
-            style={{ perspective: 1000 }}
-          >
-            <motion.div
-              style={{
-                rotateX,
-                rotateY,
-                transformStyle: "preserve-3d",
-              }}
-              className="relative h-[380px] w-[300px] sm:h-[460px] sm:w-[360px] rounded-[2rem] overflow-hidden border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_30px_rgba(59,130,246,0.2)] bg-surface"
+          <div className="portrait-float">
+            <div
+              ref={imageRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="relative"
+              style={{ perspective: 1000 }}
             >
-              <HeroPortraitFX />
+              <motion.div
+                style={{
+                  rotateX,
+                  rotateY,
+                  transformStyle: "preserve-3d",
+                }}
+                className="relative h-[380px] w-[300px] sm:h-[460px] sm:w-[360px] rounded-[2rem] overflow-hidden border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_30px_rgba(59,130,246,0.2)] bg-surface glow-pulse"
+              >
+                <HeroPortraitFX />
 
-              <Image
-                src="/profile.jpg"
-                alt={SITE.name}
-                fill
-                priority
-                className="object-cover object-top filter contrast-105 transition-transform duration-500 hover:scale-105"
-                sizes="(max-width: 640px) 300px, 360px"
-              />
+                <Image
+                  src="/profile.jpg"
+                  alt={SITE.name}
+                  fill
+                  priority
+                  className="object-cover object-top filter contrast-105 transition-transform duration-500 hover:scale-105"
+                  sizes="(max-width: 640px) 300px, 360px"
+                />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
-              {/* Floating Bottom Badge */}
-              <div className="absolute bottom-4 inset-x-4 rounded-xl border border-white/15 bg-black/75 p-3.5 backdrop-blur-md">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs font-semibold text-white flex items-center gap-1.5">
-                      <ShieldCheck className="h-4 w-4 text-blue-400" />
-                      {SITE.name}
-                    </p>
-                    <p className="text-[11px] text-muted font-mono">Backend AI Engineer</p>
+                {/* Floating Bottom Badge */}
+                <div className="absolute bottom-4 inset-x-4 rounded-xl border border-white/15 bg-black/75 p-3.5 backdrop-blur-md">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-semibold text-white flex items-center gap-1.5">
+                        <ShieldCheck className="h-4 w-4 text-blue-400" />
+                        {SITE.name}
+                      </p>
+                      <p className="text-[11px] text-muted font-mono">Backend AI Engineer</p>
+                    </div>
+                    <span className="rounded-full bg-blue-500/20 px-2.5 py-1 text-[10px] font-bold text-blue-400 border border-blue-500/40 font-mono">
+                      2× ICPC
+                    </span>
                   </div>
-                  <span className="rounded-full bg-blue-500/20 px-2.5 py-1 text-[10px] font-bold text-blue-400 border border-blue-500/40 font-mono">
-                    2× ICPC
-                  </span>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
         </motion.div>
       </div>
+
 
       {/* Scroll indicator */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-muted text-xs font-mono">

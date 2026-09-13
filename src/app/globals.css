@@ -215,3 +215,44 @@ body {
     opacity: 0;
   }
 }
+
+/* Portrait float animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+.portrait-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Card shimmer sweep */
+@keyframes shimmerSweep {
+  from { transform: translateX(-150%) skewX(-12deg); }
+  to { transform: translateX(250%) skewX(-12deg); }
+}
+.shimmer-on-hover:hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+  animation: shimmerSweep 0.7s ease-in-out;
+  pointer-events: none;
+}
+
+/* Fade-slide for filter tab transitions */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-slide-up {
+  animation: fadeSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Glow border pulse on featured cards */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(59,130,246,0.15); }
+  50% { box-shadow: 0 0 30px rgba(59,130,246,0.35); }
+}
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}

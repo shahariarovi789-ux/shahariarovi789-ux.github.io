@@ -1,21 +1,49 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { ArrowUpRight, Sparkles, Code2 } from "lucide-react";
 import { GithubIcon } from "@/components/ui/SocialIcons";
 import { Project } from "@/data/projects";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Link from "next/link";
 
+const cardVariants: Variants = {
+  rest: { y: 0, boxShadow: "0 10px 30px rgba(0,0,0,0.3)" },
+  hover: {
+    y: -8,
+    boxShadow: "0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(59,130,246,0.18)",
+    transition: { duration: 0.28, ease: "easeOut" },
+  },
+};
+
+const bulletContainer: Variants = {
+  rest: {},
+  hover: { transition: { staggerChildren: 0.05 } },
+};
+
+const bulletItem: Variants = {
+  rest: { x: 0 },
+  hover: { x: 4, transition: { duration: 0.2 } },
+};
+
+
+
 export default function ProjectCard({ project, delay }: { project: Project; delay: number }) {
   return (
     <RevealOnScroll delay={delay}>
       <motion.div
-        whileHover={{ y: -6 }}
-        transition={{ duration: 0.25, ease: "easeOut" }}
-        className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-surface/80 p-6 sm:p-7 shadow-lg shadow-black/30 transition-colors duration-300 hover:border-blue-500/40 hover:shadow-[0_15px_35px_rgba(0,0,0,0.6),0_0_25px_rgba(59,130,246,0.15)]"
+        variants={cardVariants}
+        initial="rest"
+        whileHover="hover"
+        className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-surface/80 p-6 sm:p-7 shadow-lg shadow-black/30 transition-colors duration-300 hover:border-blue-500/40"
       >
+        {/* Ambient glow */}
         <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-blue-600/0 blur-3xl transition-all duration-500 group-hover:bg-blue-600/20" />
+
+        {/* Shimmer sweep overlay */}
+        <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
+          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/[0.06] to-transparent skew-x-12" />
+        </div>
 
         <div>
           <div className="relative flex items-start justify-between gap-4">
@@ -33,10 +61,10 @@ export default function ProjectCard({ project, delay }: { project: Project; dela
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 text-muted transition-all duration-300 group-hover:border-blue-500 group-hover:text-blue-400"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 text-muted transition-all duration-300 group-hover:border-blue-500 group-hover:text-blue-400 group-hover:rotate-45"
               aria-label="GitHub Source"
             >
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300" />
             </a>
           </div>
 
@@ -48,25 +76,26 @@ export default function ProjectCard({ project, delay }: { project: Project; dela
             {project.description}
           </p>
 
-          <ul className="relative mt-4 space-y-2">
+          <motion.ul variants={bulletContainer} className="relative mt-4 space-y-2">
             {project.bullets.map((bullet, i) => (
-              <li key={i} className="flex gap-2.5 text-sm leading-relaxed text-muted">
+              <motion.li key={i} variants={bulletItem} className="flex gap-2.5 text-sm leading-relaxed">
                 <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500/80" />
                 {bullet}
-              </li>
+              </motion.li>
             ))}
-          </ul>
+          </motion.ul>
         </div>
 
         <div>
           <div className="relative mt-6 flex flex-wrap gap-2">
             {project.tech.map((t) => (
-              <span
+              <motion.span
                 key={t}
-                className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs font-mono text-muted transition-colors group-hover:border-blue-500/30"
+                whileHover={{ scale: 1.08, borderColor: "rgba(59,130,246,0.5)" }}
+                className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs font-mono text-muted cursor-default"
               >
                 {t}
-              </span>
+              </motion.span>
             ))}
           </div>
 
@@ -95,3 +124,4 @@ export default function ProjectCard({ project, delay }: { project: Project; dela
     </RevealOnScroll>
   );
 }
+
