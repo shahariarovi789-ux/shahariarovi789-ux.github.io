@@ -40,14 +40,33 @@ export default function Navbar() {
         {/* Brand Logo */}
         <Link
           href="/"
-          className="group flex items-center gap-2.5 font-heading text-lg font-semibold tracking-tight text-white"
+          className="group flex items-center gap-3 select-none"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white shadow-[0_0_15px_rgba(59,130,246,0.5)] transition-transform duration-300 group-hover:scale-110">
-            S
+          {/* Code bracket icon */}
+          <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600/15 border border-blue-500/30 shadow-[0_0_12px_rgba(59,130,246,0.25)] transition-all duration-300 group-hover:bg-blue-600/25 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.45)] group-hover:border-blue-500/50">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              className="h-5 w-5"
+              aria-hidden="true"
+            >
+              {/* < */}
+              <path d="M9 6L4 12L9 18" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              {/* / */}
+              <path d="M13 6L11 18" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" />
+              {/* > */}
+              <path d="M15 6L20 12L15 18" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </span>
-          <span className="flex items-center gap-1.5">
-            {SITE.name}
-            <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+
+          {/* Wordmark */}
+          <span className="flex flex-col leading-none">
+            <span className="font-heading text-[17px] font-bold tracking-tight text-white transition-colors group-hover:text-blue-300">
+              Ovi
+            </span>
+            <span className="font-mono text-[10px] tracking-[0.15em] text-blue-400/80 uppercase">
+              .dev
+            </span>
           </span>
         </Link>
 

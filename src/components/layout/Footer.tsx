@@ -46,11 +46,24 @@ export default function Footer() {
         {/* Top Telemetry Header */}
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between pb-12 border-b border-white/10">
           <div>
-            <Link href="/" className="font-heading text-2xl font-bold text-white flex items-center gap-2">
-              {SITE.name}
-              <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+            <Link href="/" className="group inline-flex items-center gap-3 select-none">
+              <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600/15 border border-blue-500/30 shadow-[0_0_12px_rgba(59,130,246,0.25)] transition-all duration-300 group-hover:bg-blue-600/25 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.45)]">
+                <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden="true">
+                  <path d="M9 6L4 12L9 18" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M13 6L11 18" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M15 6L20 12L15 18" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+              <span className="flex flex-col leading-none">
+                <span className="font-heading text-xl font-bold tracking-tight text-white transition-colors group-hover:text-blue-300">
+                  Ovi
+                </span>
+                <span className="font-mono text-[10px] tracking-[0.15em] text-blue-400/80 uppercase">
+                  .dev
+                </span>
+              </span>
             </Link>
-            <p className="mt-1 text-xs uppercase tracking-widest text-muted font-mono">
+            <p className="mt-3 text-xs uppercase tracking-widest text-muted font-mono">
               Backend AI Systems · Model Context Protocol (MCP) · Competitive Programming
             </p>
           </div>
