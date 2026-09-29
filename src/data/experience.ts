@@ -91,12 +91,12 @@ export const EXPERIENCE: ExperienceItem[] = [
     type: "education",
     role: "B.Sc. in Computer Science & Engineering",
     organization: "University of Liberal Arts Bangladesh (ULAB)",
-    period: "Jan 2022 — Present",
-    current: true,
+    period: "Jan 2022 — Sep 2026",
+    current: false,
     bullets: [
-      "Final semester · CGPA: 3.10 / 4.00.",
+      "Graduated · CGPA: 3.10 / 4.00.",
       "Focus: Artificial Intelligence, Backend AI Systems & Algorithms.",
-      "Selected for final year university capstone project with ROAR adaptive AI tutoring system."
+      "Completed final year university capstone project with ROAR adaptive AI tutoring system."
     ],
     tags: ["Computer Science", "Artificial Intelligence", "Algorithms", "Backend Systems"]
   }

@@ -90,7 +90,7 @@ export default function Hero() {
           </div>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-            CSE undergrad at ULAB, AI enthusiast &amp; 2× ICPC Dhaka Regionalist — building backend AI systems with Python, FastAPI, LLMs, and Model Context Protocol (MCP).
+            CSE graduate from ULAB, AI enthusiast &amp; 2× ICPC Dhaka Regionalist — building backend AI systems with Python, FastAPI, LLMs, and Model Context Protocol (MCP).
           </p>
 
           {/* Current roles banner */}

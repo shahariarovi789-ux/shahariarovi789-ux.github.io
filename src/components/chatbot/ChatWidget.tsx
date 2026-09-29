@@ -47,7 +47,7 @@ function generateLocalAnswer(query: string): string {
     return `You can reach ${SITE.name} directly via email at ${SITE.email} or by phone/WhatsApp at ${SITE.phone}. You can also connect on LinkedIn at ${SITE.linkedinUrl} or explore his open-source code on GitHub at ${SITE.githubUrl}.`;
   }
 
-  return `${SITE.name} is a Computer Science & Engineering undergrad at ULAB, 2× ICPC Dhaka Regionalist, and Backend AI Engineer Intern at FlyRank AI specializing in Python, FastAPI, Model Context Protocol (MCP), and LLMs. Feel free to explore his projects or reach out directly at ${SITE.email}!`;
+  return `${SITE.name} is a Computer Science & Engineering graduate from ULAB, 2× ICPC Dhaka Regionalist, and Backend AI Engineer Intern (completed) at FlyRank AI specializing in Python, FastAPI, Model Context Protocol (MCP), and LLMs. Feel free to explore his projects or reach out directly at ${SITE.email}!`;
 }
 
 export default function ChatWidget() {
