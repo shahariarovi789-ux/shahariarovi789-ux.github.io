@@ -74,15 +74,15 @@ export default function Hero() {
             <span className="text-gradient">Shahariar Asfaq Ovi</span>
           </h1>
 
-          <div className="mt-4 h-11 overflow-hidden">
+          <div className="mt-4 min-h-[3.75rem] sm:min-h-[2.75rem] overflow-hidden flex items-start">
             <AnimatePresence mode="wait">
               <motion.p
                 key={ROLES[roleIndex]}
-                initial={{ y: 24, opacity: 0 }}
+                initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -24, opacity: 0 }}
-                transition={{ duration: 0.45, ease: "easeInOut" }}
-                className="font-heading text-2xl font-semibold text-blue-400 sm:text-3xl"
+                exit={{ y: -20, opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="font-heading text-xl sm:text-2xl lg:text-3xl font-semibold text-blue-400 leading-snug"
               >
                 {ROLES[roleIndex]}
               </motion.p>
