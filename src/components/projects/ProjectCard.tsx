@@ -7,6 +7,9 @@ import { Project } from "@/data/projects";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Link from "next/link";
 
+import { useRef } from "react";
+import { useMotionValue, useTransform } from "framer-motion";
+
 const cardVariants: Variants = {
   rest: { y: 0, boxShadow: "0 10px 30px rgba(0,0,0,0.3)" },
   hover: {
@@ -29,9 +32,34 @@ const bulletItem: Variants = {
 
 
 export default function ProjectCard({ project, delay }: { project: Project; delay: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  const rotateX = useTransform(y, [-100, 100], [4, -4]);
+  const rotateY = useTransform(x, [-100, 100], [-4, 4]);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    x.set(e.clientX - centerX);
+    y.set(e.clientY - centerY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   return (
     <RevealOnScroll delay={delay}>
       <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d", perspective: 1000 }}
         variants={cardVariants}
         initial="rest"
         whileHover="hover"

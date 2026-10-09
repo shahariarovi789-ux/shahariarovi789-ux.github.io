@@ -1,4 +1,5 @@
 "use client";
+import MagneticButton from "@/components/ui/MagneticButton";
 
 import { SITE } from "@/data/site";
 import { useEffect, useRef, useState } from "react";
@@ -108,40 +109,44 @@ export default function Hero() {
 
           {/* CTA Buttons & Socials */}
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Link
+            <MagneticButton
+              as={Link}
               href="/projects"
-              className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_0_25px_rgba(59,130,246,0.4)] transition-all hover:bg-blue-500 hover:scale-105 active:scale-95"
+              className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_0_25px_rgba(59,130,246,0.4)] transition-all hover:bg-blue-500"
             >
               Explore Projects
               <ArrowRight className="h-4 w-4" />
-            </Link>
+            </MagneticButton>
 
-            <Link
+            <MagneticButton
+              as={Link}
               href="/projects/flyrank-backend-internship"
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-blue-500/50 hover:bg-blue-500/10 active:scale-95"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-blue-500/50 hover:bg-blue-500/10"
             >
               FlyRank AI Case Study
-            </Link>
+            </MagneticButton>
 
             <div className="flex items-center gap-3 pl-2">
-              <a
+              <MagneticButton
+                as="a"
                 href={SITE.githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full border border-white/10 bg-white/5 p-2.5 text-muted transition-colors hover:border-white/30 hover:text-white"
+                className="flex items-center justify-center rounded-full border border-white/10 bg-white/5 p-3 text-muted transition-colors hover:border-white/30 hover:text-white"
                 aria-label="GitHub Profile"
               >
                 <GithubIcon className="h-4 w-4" />
-              </a>
-              <a
+              </MagneticButton>
+              <MagneticButton
+                as="a"
                 href={SITE.linkedinUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full border border-white/10 bg-white/5 p-2.5 text-muted transition-colors hover:border-white/30 hover:text-white"
+                className="flex items-center justify-center rounded-full border border-white/10 bg-white/5 p-3 text-muted transition-colors hover:border-white/30 hover:text-white"
                 aria-label="LinkedIn Profile"
               >
                 <LinkedinIcon className="h-4 w-4" />
-              </a>
+              </MagneticButton>
             </div>
           </div>
         </motion.div>
