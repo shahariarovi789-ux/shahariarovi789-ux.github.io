@@ -29,16 +29,16 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "roar-prompt-tutor",
-    title: "ROAR — Final Year Capstone Project (ULAB)",
+    title: "Project ROAR — Multi-Agent Intelligent Tutoring System",
     description:
-      "Selected as the official final-year university capstone project. An intelligent, adaptive tutoring system utilizing a quantized local DeepSeek-7B model fine-tuned with PEFT/LoRA adapters to dynamically teach prompt engineering. Features a custom SQLite-backed learning state machine and a hybrid rule+LLM evaluation loop.",
+      "A publication-grade, air-gapped Intelligent Tutoring System (ITS) for prompt engineering education. Uses a 5-agent Hierarchical Multi-Agent System (HMAS) orchestrated via Model Context Protocol (MCP 2.x), a 36-node Bloom's taxonomy curriculum DAG, ChromaDB RAG with 1,899 vetted QA chunks, and a dual-stage evaluator achieving Cohen's κ = 0.8963 grading alignment. Runs fully offline on sub-6GB VRAM consumer hardware.",
     bullets: [
-      "Fine-tuned a quantized local DeepSeek-7B model using PEFT/LoRA adapters to deliver personalized, dynamic prompt engineering instruction.",
-      "Architected a custom SQLite-backed learning state machine tracking student progression and skill acquisition.",
-      "Engineered a hybrid rule-based and LLM evaluation loop for automated real-time feedback with Gradio interface."
+      "Architected a 5-agent HMAS (Onboarding, Lesson, Quiz, Evaluator, Hardware Scout) with MCP 2.x JSON-RPC protocol bus achieving 0% cross-agent context drift.",
+      "Built ChromaDB RAG pipeline indexing 1,899 vetted QA chunks, reducing hallucination rate 4.1× (24.8% → 1.2%) vs baseline LLM.",
+      "Implemented dual-stage Evaluator Agent (regex rubric + semantic LLM judge) reaching F₁ = 95.8% and Cohen's κ = 0.8963 vs senior human instructors.",
     ],
-    tech: ["Python", "Transformers", "PEFT", "Gradio", "SQLite"],
-    githubUrl: "https://github.com/shahariarovi789-ux/roar-prompt-tutor",
+    tech: ["Python", "FastAPI", "MCP 2.x", "ChromaDB", "Ollama", "SQLite", "Docker"],
+    githubUrl: "https://github.com/shahariarovi789-ux/project-roar-ai",
     featured: true,
   },
   {
